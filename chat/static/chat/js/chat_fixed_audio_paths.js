@@ -40,70 +40,25 @@ const questionAnswers = {
     "How long does it take for an ulcer to heal?": "The healing time for ulcers depends on several factors including the type of ulcer, its size, the cause, and the treatment approach:\n\n**With proper treatment:**\n• Most gastric ulcers heal within 6-8 weeks\n• Most duodenal ulcers heal within 4-6 weeks\n• Esophageal ulcers may take 8-12 weeks to heal\n\n**Factors affecting healing time:**\n• Size and depth of the ulcer\n• Cause (H. pylori vs. NSAID-induced)\n• Adherence to treatment plan\n• Overall health and age\n• Smoking and alcohol use\n• Stress levels\n\n**Treatment duration:**\n• Acid-reducing medications (PPIs or H2 blockers): 4-8 weeks\n• Antibiotics for H. pylori: 10-14 days\n• Follow-up testing for H. pylori: 4 weeks after completing antibiotics\n\n**Signs of healing:**\n• Reduction in pain and other symptoms\n• Improvement in appetite and weight\n• Healing of the ulcer as seen on follow-up endoscopy (if performed)\n\nIf ulcers don't heal with standard treatment, your healthcare provider may recommend additional testing or different treatment approaches. In rare cases, surgery may be needed to treat complications or ulcers that don't respond to other treatments."
 };
 
-// Initialize the chat with specific ulcer-related questions
-window.initializeChat = function() {
-    const suggestionsContainer = document.getElementById('suggestions-container');
-    const startChatButton = document.getElementById('start-chat-button');
-    const suggestions = [
-        "What should I eat if I have an ulcer?",
-        "What foods should I avoid with an ulcer?",
-        "What are the symptoms of a stomach ulcer?",
-        "How are ulcers treated?",
-        "What causes ulcers?",
-        "How can I prevent ulcers?",
-        "What is the difference between gastric and duodenal ulcers?",
-        "How long does it take for an ulcer to heal?"
-    ];
-
-    // Clear existing suggestions
-    const existingChips = suggestionsContainer.querySelectorAll('.suggestion-chip');
-    existingChips.forEach(chip => chip.remove());
-
-    // Add new suggestions with animation
-    suggestions.forEach((suggestion, index) => {
-        setTimeout(() => {
-            const chip = document.createElement('button');
-            chip.className = 'suggestion-chip';
-            chip.textContent = suggestion;
-            chip.onclick = function() {
-                handleQuestionClick(suggestion);
-            };
-
-            // Find the suggestions div to append to
-            const targetDiv = suggestionsContainer.querySelector('.suggestion-chips') || 
-                             suggestionsContainer.querySelector('.suggestions-container');
-
-            if (targetDiv) {
-                targetDiv.appendChild(chip);
-            }
-        }, index * 100);
-    });
-
-    // Add event listener for start chat button
-    if (startChatButton) {
-        startChatButton.addEventListener('click', async function() {
-            // Hide the start button
-            this.style.display = 'none';
-
-            // Show welcome message
-            appendMessage('bot', "Hello! I'm your ulcer specialist assistant. I can help you with questions about ulcers, treatments, diet, and lifestyle changes.");
-
-            // Add follow-up suggestions
-            setTimeout(() => {
-                showSuggestions([
-                    "What should I eat if I have an ulcer?",
-                    "What foods should I avoid with an ulcer?",
-                    "What are the symptoms of a stomach ulcer?"
-                ]);
-            }, 1000);
-        });
-    }
-};
-
 // Function to handle question clicks
 async function handleQuestionClick(question) {
-    // Check if the start chat button is visible
+    // Get references to DOM elements
     const startChatButton = document.getElementById('start-chat-button');
+    const form = document.getElementById('input-form');
+    const input = document.getElementById('message-input');
+    const messages = document.getElementById('messages');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const suggestionsContainer = document.getElementById('suggestions-container');
+
+    // Play send sound
+    try {
+        const sendSound = new Audio('/static/chat/audio/send.mp3');
+        sendSound.play().catch(e => console.log('Send sound play error:', e));
+    } catch (e) {
+        console.log('Send sound error:', e);
+    }
+
+    // Check if the start chat button is visible
     if (startChatButton && startChatButton.style.display !== 'none') {
         // Hide the start button
         startChatButton.style.display = 'none';
@@ -118,8 +73,15 @@ async function handleQuestionClick(question) {
     // Add the question as a user message
     appendMessage('user', question);
 
-    // Show typing indicator
+    // Show typing indicator and play typing sound
     showTypingIndicator();
+
+    try {
+        const typingSound = new Audio('/static/chat/audio/typing.mp3');
+        typingSound.play().catch(e => console.log('Typing sound play error:', e));
+    } catch (e) {
+        console.log('Typing sound error:', e);
+    }
 
     // Simulate processing time
     setTimeout(() => {
@@ -167,154 +129,60 @@ async function handleQuestionClick(question) {
             })
             .catch(error => {
                 console.error('Error:', error);
-                appendMessage('bot', 'Sorry, I encountered an error. Please try again.');
+                appendMessage('bot', "I'm sorry, I encountered an error. Please try again.");
             });
         }
     }, 1000);
 }
 
-// Function to format time
-function formatTime() {
-    const now = new Date();
-    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
+// Function to append a message to the chat
+function appendMessage(sender, message) {
+    const messages = document.getElementById('messages');
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${sender}-message`;
 
-// Function to create message HTML
-function createMessageHTML(sender, text) {
-    const isUser = sender === 'user';
-    const avatarIcon = isUser ? 'bi-person-fill' : 'bi-robot';
-    const avatarBg = isUser ? 'var(--primary-color)' : 'var(--success-color)';
+    // Replace newlines with <br> tags
+    const formattedMessage = message.replace(/\n/g, '<br>');
+    messageElement.innerHTML = formattedMessage;
 
-    return `
-        <div class="message ${sender}">
-            <div class="message-avatar" style="background-color: ${avatarBg};">
-                <i class="bi ${avatarIcon}"></i>
-            </div>
-            <div class="message-content">
-                <div>${text}</div>
-                <div class="message-time">${formatTime()}</div>
-            </div>
-        </div>
-    `;
-}
-
-// Function to append message to chat
-function appendMessage(sender, text) {
-    if (!messages) return;
-
-    const messageHTML = createMessageHTML(sender, text);
-    messages.insertAdjacentHTML('beforeend', messageHTML);
-
-    // Get the last message element
-    const lastMessage = messages.lastElementChild;
-    if (lastMessage) {
-        // Add animation class
-        lastMessage.classList.add('message');
-
-        // If it's a bot message, use typing animation
-        if (sender === 'bot') {
-            const messageContent = lastMessage.querySelector('.message-content > div');
-            if (messageContent) {
-                typeMessage(messageContent, text);
-            }
-        }
-
-        // Scroll to the bottom
-        messages.scrollTop = messages.scrollHeight;
-    }
-}
-
-// Function to type out a message character by character
-function typeMessage(element, text, callback) {
-    if (!element) return;
-
-    element.innerHTML = '';
-    let i = 0;
-
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, 20);
-        } else if (callback) {
-            callback();
-        }
-    }
-
-    type();
+    messages.appendChild(messageElement);
+    messages.scrollTop = messages.scrollHeight;
 }
 
 // Function to show typing indicator
 function showTypingIndicator() {
-    if (typingIndicator) {
-        typingIndicator.style.display = 'flex';
-    }
+    const messages = document.getElementById('messages');
+    const typingIndicator = document.createElement('div');
+    typingIndicator.className = 'message bot-message typing-indicator';
+    typingIndicator.innerHTML = '<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>';
+
+    messages.appendChild(typingIndicator);
+    messages.scrollTop = messages.scrollHeight;
 }
 
 // Function to hide typing indicator
 function hideTypingIndicator() {
+    const typingIndicator = document.querySelector('.typing-indicator');
     if (typingIndicator) {
-        typingIndicator.style.display = 'none';
+        typingIndicator.remove();
     }
 }
 
 // Function to show suggestions
 function showSuggestions(suggestions) {
-    if (!suggestionsContainer || !suggestions || suggestions.length === 0) {
-        clearSuggestions();
-        return;
-    }
+    const suggestionsContainer = document.getElementById('suggestions-container');
+    suggestionsContainer.innerHTML = '';
 
-    // Find the suggestions div inside the suggestions container
-    const suggestionsDiv = suggestionsContainer.querySelector('.suggestion-chips') ||
-                         suggestionsContainer.querySelector('.suggestions-container');
-
-    // If neither exists, create a new suggestions div
-    if (!suggestionsDiv) {
-        const newSuggestionsDiv = document.createElement('div');
-        newSuggestionsDiv.className = 'suggestion-chips';
-        suggestionsContainer.appendChild(newSuggestionsDiv);
-    }
-
-    // Clear existing suggestions
-    const suggestionsToClear = suggestionsContainer.querySelectorAll('.suggestion-chip');
-    suggestionsToClear.forEach(chip => chip.remove());
-
-    // Add suggestions with animation
-    suggestions.forEach((suggestion, index) => {
-        setTimeout(() => {
-            const chip = document.createElement('button');
-            chip.className = 'suggestion-chip';
-            chip.textContent = suggestion;
-            chip.onclick = function() {
-                handleQuestionClick(suggestion);
-            };
-
-            // Find the suggestions div to append to
-            const targetDiv = suggestionsContainer.querySelector('.suggestion-chips') ||
-                             suggestionsContainer.querySelector('.suggestions-container');
-
-            if (targetDiv) {
-                targetDiv.appendChild(chip);
-            }
-        }, index * 100);
+    suggestions.forEach(suggestion => {
+        const chip = document.createElement('div');
+        chip.className = 'suggestion-chip';
+        chip.textContent = suggestion;
+        chip.onclick = () => handleQuestionClick(suggestion);
+        suggestionsContainer.appendChild(chip);
     });
 }
 
-// Function to clear suggestions
-function clearSuggestions() {
-    if (suggestionsContainer) {
-        // Remove all suggestion chips but keep the start button container
-        const suggestionChips = suggestionsContainer.querySelectorAll('.suggestion-chip');
-        suggestionChips.forEach(chip => chip.remove());
-
-        // Also remove any empty suggestion containers
-        const emptyContainers = suggestionsContainer.querySelectorAll('.suggestions-container:empty');
-        emptyContainers.forEach(container => container.remove());
-    }
-}
-
-// Function to get cookie value
+// Function to get CSRF token
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -330,68 +198,74 @@ function getCookie(name) {
     return cookieValue;
 }
 
-// Initialize the chat when the DOM is loaded
+// Initialize chat when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize chat components
+    // Get references to DOM elements
+    const startChatButton = document.getElementById('start-chat-button');
     const form = document.getElementById('input-form');
     const input = document.getElementById('message-input');
     const messages = document.getElementById('messages');
-    const typingIndicator = document.getElementById('typing-indicator');
     const suggestionsContainer = document.getElementById('suggestions-container');
 
-    // Set smooth scrolling behavior
-    if (messages) {
-        messages.style.scrollBehavior = 'smooth';
-    }
-
-    // Initialize the enhanced chat
-    initializeChat();
-
-    // Add welcome message if no messages exist
-    if (messages && messages.children.length === 0) {
-        // Show initial welcome message after a short delay
-        setTimeout(() => {
+    // Initialize the Start Chat button
+    if (startChatButton) {
+        startChatButton.addEventListener('click', () => {
+            startChatButton.style.display = 'none';
             appendMessage('bot', "Hello! I'm your ulcer specialist assistant. I can help you with questions about ulcers, treatments, diet, and lifestyle changes.");
 
-            // Add initial suggestions after welcome message
+            // Show initial suggestions
             setTimeout(() => {
                 showSuggestions([
                     "What should I eat if I have an ulcer?",
                     "What foods should I avoid with an ulcer?",
-                    "What are the symptoms of a stomach ulcer?",
-                    "How are ulcers treated?",
-                    "What causes ulcers?",
-                    "How can I prevent ulcers?",
-                    "What is the difference between gastric and duodenal ulcers?",
-                    "How long does it take for an ulcer to heal?"
+                    "What are the symptoms of a stomach ulcer?"
                 ]);
             }, 1000);
-        }, 500);
+        });
     }
 
     // Handle form submission
     if (form) {
-        form.addEventListener('submit', async function(e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            const userMsg = input.value.trim();
-            if (!userMsg) return;
-
-            // Add user message to chat
-            appendMessage('user', userMsg);
-            input.value = '';
-
-            // Show typing indicator
-            showTypingIndicator();
-
+            // Play send sound
             try {
-                // Check if we have a predefined answer for this question
-                if (questionAnswers[userMsg]) {
-                    // Hide typing indicator
-                    hideTypingIndicator();
+                const sendSound = new Audio('/static/chat/audio/send.mp3');
+                sendSound.play().catch(e => console.log('Send sound play error:', e));
+            } catch (e) {
+                console.log('Send sound error:', e);
+            }
 
-                    // Add bot response with predefined answer
-                    appendMessage('bot', questionAnswers[userMsg]);
+            const message = input.value.trim();
+            if (message) {
+                appendMessage('user', message);
+                input.value = '';
+
+                // Show typing indicator and play typing sound
+                showTypingIndicator();
+
+                try {
+                    const typingSound = new Audio('/static/chat/audio/typing.mp3');
+                    typingSound.play().catch(e => console.log('Typing sound play error:', e));
+                } catch (e) {
+                    console.log('Typing sound error:', e);
+                }
+
+                // Send message to server
+                fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: `message=${encodeURIComponent(message)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    hideTypingIndicator();
+                    appendMessage('bot', data.response);
 
                     // Add follow-up suggestions
                     setTimeout(() => {
@@ -401,58 +275,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             "What are the symptoms of a stomach ulcer?"
                         ]);
                     }, 1000);
-
-                    return;
-                }
-
-                // Send message to server using Django's CSRF protection
-                const formData = new FormData();
-                formData.append('message', userMsg);
-
-                const response = await fetch('', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': getCookie('csrftoken'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: formData
+                })
+                .catch(error => {
+                    hideTypingIndicator();
+                    console.error('Error:', error);
+                    appendMessage('bot', "I'm sorry, I encountered an error. Please try again.");
                 });
-
-                // Hide typing indicator
-                hideTypingIndicator();
-
-                // Get response data
-                const data = await response.json();
-
-                // Add bot response to chat
-                appendMessage('bot', data.response);
-
-                // Handle suggestions if provided
-                if (data.suggestions && data.suggestions.length > 0) {
-                    showSuggestions(data.suggestions);
-                } else {
-                    clearSuggestions();
-                }
-
-                // If it's a structured form question, ensure suggestions are cleared
-                if (data.is_structured_form) {
-                    clearSuggestions();
-                }
-
-            } catch (error) {
-                hideTypingIndicator();
-                appendMessage('bot', 'Sorry, there was an error. Please try again.');
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    // Add enter key support for sending messages
-    if (input && form) {
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                form.dispatchEvent(new Event('submit'));
             }
         });
     }

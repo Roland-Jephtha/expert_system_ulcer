@@ -40,70 +40,25 @@ const questionAnswers = {
     "How long does it take for an ulcer to heal?": "The healing time for ulcers depends on several factors including the type of ulcer, its size, the cause, and the treatment approach:\n\n**With proper treatment:**\n• Most gastric ulcers heal within 6-8 weeks\n• Most duodenal ulcers heal within 4-6 weeks\n• Esophageal ulcers may take 8-12 weeks to heal\n\n**Factors affecting healing time:**\n• Size and depth of the ulcer\n• Cause (H. pylori vs. NSAID-induced)\n• Adherence to treatment plan\n• Overall health and age\n• Smoking and alcohol use\n• Stress levels\n\n**Treatment duration:**\n• Acid-reducing medications (PPIs or H2 blockers): 4-8 weeks\n• Antibiotics for H. pylori: 10-14 days\n• Follow-up testing for H. pylori: 4 weeks after completing antibiotics\n\n**Signs of healing:**\n• Reduction in pain and other symptoms\n• Improvement in appetite and weight\n• Healing of the ulcer as seen on follow-up endoscopy (if performed)\n\nIf ulcers don't heal with standard treatment, your healthcare provider may recommend additional testing or different treatment approaches. In rare cases, surgery may be needed to treat complications or ulcers that don't respond to other treatments."
 };
 
-// Initialize the chat with specific ulcer-related questions
-window.initializeChat = function() {
-    const suggestionsContainer = document.getElementById('suggestions-container');
-    const startChatButton = document.getElementById('start-chat-button');
-    const suggestions = [
-        "What should I eat if I have an ulcer?",
-        "What foods should I avoid with an ulcer?",
-        "What are the symptoms of a stomach ulcer?",
-        "How are ulcers treated?",
-        "What causes ulcers?",
-        "How can I prevent ulcers?",
-        "What is the difference between gastric and duodenal ulcers?",
-        "How long does it take for an ulcer to heal?"
-    ];
-
-    // Clear existing suggestions
-    const existingChips = suggestionsContainer.querySelectorAll('.suggestion-chip');
-    existingChips.forEach(chip => chip.remove());
-
-    // Add new suggestions with animation
-    suggestions.forEach((suggestion, index) => {
-        setTimeout(() => {
-            const chip = document.createElement('button');
-            chip.className = 'suggestion-chip';
-            chip.textContent = suggestion;
-            chip.onclick = function() {
-                handleQuestionClick(suggestion);
-            };
-
-            // Find the suggestions div to append to
-            const targetDiv = suggestionsContainer.querySelector('.suggestion-chips') || 
-                             suggestionsContainer.querySelector('.suggestions-container');
-
-            if (targetDiv) {
-                targetDiv.appendChild(chip);
-            }
-        }, index * 100);
-    });
-
-    // Add event listener for start chat button
-    if (startChatButton) {
-        startChatButton.addEventListener('click', async function() {
-            // Hide the start button
-            this.style.display = 'none';
-
-            // Show welcome message
-            appendMessage('bot', "Hello! I'm your ulcer specialist assistant. I can help you with questions about ulcers, treatments, diet, and lifestyle changes. What would you like to know?");
-
-            // Add follow-up suggestions
-            setTimeout(() => {
-                showSuggestions([
-                    "What should I eat if I have an ulcer?",
-                    "What are the symptoms of a stomach ulcer?",
-                    "How are ulcers treated?"
-                ]);
-            }, 1000);
-        });
-    }
-};
-
 // Function to handle question clicks
 async function handleQuestionClick(question) {
-    // Check if the start chat button is visible
+    // Get references to DOM elements
     const startChatButton = document.getElementById('start-chat-button');
+    const form = document.getElementById('input-form');
+    const input = document.getElementById('message-input');
+    const messages = document.getElementById('messages');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const suggestionsContainer = document.getElementById('suggestions-container');
+
+    // Play send sound
+    try {
+        const sendSound = new Audio('/static/chat/audio/send.mp3');
+        sendSound.play().catch(e => console.log('Send sound play error:', e));
+    } catch (e) {
+        console.log('Send sound error:', e);
+    }
+
+    // Check if the start chat button is visible
     if (startChatButton && startChatButton.style.display !== 'none') {
         // Hide the start button
         startChatButton.style.display = 'none';
@@ -118,8 +73,15 @@ async function handleQuestionClick(question) {
     // Add the question as a user message
     appendMessage('user', question);
 
-    // Show typing indicator
+    // Show typing indicator and play typing sound
     showTypingIndicator();
+
+    try {
+        const typingSound = new Audio('/static/chat/audio/typing.mp3');
+        typingSound.play().catch(e => console.log('Typing sound play error:', e));
+    } catch (e) {
+        console.log('Typing sound error:', e);
+    }
 
     // Simulate processing time
     setTimeout(() => {
@@ -207,6 +169,7 @@ function appendMessage(sender, text) {
 
     // Get the last message element
     const lastMessage = messages.lastElementChild;
+
     if (lastMessage) {
         // Add animation class
         lastMessage.classList.add('message');
@@ -246,6 +209,7 @@ function typeMessage(element, text, callback) {
 
 // Function to show typing indicator
 function showTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
     if (typingIndicator) {
         typingIndicator.style.display = 'flex';
     }
@@ -253,33 +217,22 @@ function showTypingIndicator() {
 
 // Function to hide typing indicator
 function hideTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
     if (typingIndicator) {
         typingIndicator.style.display = 'none';
     }
 }
 
-// Function to clear suggestions
-function clearSuggestions() {
-    if (suggestionsContainer) {
-        // Remove all suggestion chips but keep the start button container
-        const suggestionChips = suggestionsContainer.querySelectorAll('.suggestion-chip');
-        suggestionChips.forEach(chip => chip.remove());
-
-        // Also remove any empty suggestion containers
-        const emptyContainers = suggestionsContainer.querySelectorAll('.suggestions-container:empty');
-        emptyContainers.forEach(container => container.remove());
-    }
-}
-
 // Function to show suggestions
 function showSuggestions(suggestions) {
+    const suggestionsContainer = document.getElementById('suggestions-container');
     if (!suggestionsContainer || !suggestions || suggestions.length === 0) {
         clearSuggestions();
         return;
     }
 
     // Find the suggestions div inside the suggestions container
-    const suggestionsDiv = suggestionsContainer.querySelector('.suggestion-chips') || 
+    const suggestionsDiv = suggestionsContainer.querySelector('.suggestion-chips') ||
                          suggestionsContainer.querySelector('.suggestions-container');
 
     // If neither exists, create a new suggestions div
@@ -304,7 +257,7 @@ function showSuggestions(suggestions) {
             };
 
             // Find the suggestions div to append to
-            const targetDiv = suggestionsContainer.querySelector('.suggestion-chips') || 
+            const targetDiv = suggestionsContainer.querySelector('.suggestion-chips') ||
                              suggestionsContainer.querySelector('.suggestions-container');
 
             if (targetDiv) {
@@ -312,6 +265,20 @@ function showSuggestions(suggestions) {
             }
         }, index * 100);
     });
+}
+
+// Function to clear suggestions
+function clearSuggestions() {
+    const suggestionsContainer = document.getElementById('suggestions-container');
+    if (suggestionsContainer) {
+        // Remove all suggestion chips but keep the start button container
+        const suggestionChips = suggestionsContainer.querySelectorAll('.suggestion-chip');
+        suggestionChips.forEach(chip => chip.remove());
+
+        // Also remove any empty suggestion containers
+        const emptyContainers = suggestionsContainer.querySelectorAll('.suggestions-container:empty');
+        emptyContainers.forEach(container => container.remove());
+    }
 }
 
 // Function to get cookie value
@@ -329,6 +296,74 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+// Initialize the chat with specific ulcer-related questions
+window.initializeChat = function() {
+    const suggestionsContainer = document.getElementById('suggestions-container');
+    const startChatButton = document.getElementById('start-chat-button');
+    const suggestions = [
+        "What should I eat if I have an ulcer?",
+        "What foods should I avoid with an ulcer?",
+        "What are the symptoms of a stomach ulcer?",
+        "How are ulcers treated?",
+        "What causes ulcers?",
+        "How can I prevent ulcers?",
+        "What is the difference between gastric and duodenal ulcers?",
+        "How long does it take for an ulcer to heal?"
+    ];
+
+    // Clear existing suggestions
+    const existingChips = suggestionsContainer.querySelectorAll('.suggestion-chip');
+    existingChips.forEach(chip => chip.remove());
+
+    // Add new suggestions with animation
+    suggestions.forEach((suggestion, index) => {
+        setTimeout(() => {
+            const chip = document.createElement('button');
+            chip.className = 'suggestion-chip';
+            chip.textContent = suggestion;
+            chip.onclick = function() {
+                handleQuestionClick(suggestion);
+            };
+
+            // Find the suggestions div to append to
+            const targetDiv = suggestionsContainer.querySelector('.suggestion-chips') || 
+                             suggestionsContainer.querySelector('.suggestions-container');
+
+            if (targetDiv) {
+                targetDiv.appendChild(chip);
+            }
+        }, index * 100);
+    });
+
+    // Add event listener for start chat button
+    if (startChatButton) {
+        startChatButton.addEventListener('click', async function() {
+            // Play send sound
+            try {
+                const sendSound = new Audio('{% static "chat/audio/send.mp3" %}');
+                sendSound.play().catch(e => console.log('Send sound play error:', e));
+            } catch (e) {
+                console.log('Send sound error:', e);
+            }
+
+            // Hide the start button
+            this.style.display = 'none';
+
+            // Show welcome message
+            appendMessage('bot', "Hello! I'm your ulcer specialist assistant. I can help you with questions about ulcers, treatments, diet, and lifestyle changes.");
+
+            // Add follow-up suggestions
+            setTimeout(() => {
+                showSuggestions([
+                    "What should I eat if I have an ulcer?",
+                    "What foods should I avoid with an ulcer?",
+                    "What are the symptoms of a stomach ulcer?"
+                ]);
+            }, 1000);
+        });
+    }
+};
 
 // Initialize the chat when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -377,6 +412,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const userMsg = input.value.trim();
             if (!userMsg) return;
 
+            // Play send sound
+            try {
+                const sendSound = new Audio('{% static "chat/audio/send.mp3" %}');
+                sendSound.play().catch(e => console.log('Send sound play error:', e));
+            } catch (e) {
+                console.log('Send sound error:', e);
+            }
+
             // Add user message to chat
             appendMessage('user', userMsg);
             input.value = '';
@@ -417,6 +460,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     body: formData
                 });
+
+                // Hide typing indicator
+                hideTypingIndicator();
 
                 // Get response data
                 const data = await response.json();

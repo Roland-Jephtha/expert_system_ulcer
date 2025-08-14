@@ -42,8 +42,35 @@ const questionAnswers = {
 
 // Function to handle question clicks
 async function handleQuestionClick(question) {
-    // Check if the start chat button is visible
+    // Get references to DOM elements
     const startChatButton = document.getElementById('start-chat-button');
+    const form = document.getElementById('input-form');
+    const input = document.getElementById('message-input');
+    const messages = document.getElementById('messages');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const suggestionsContainer = document.getElementById('suggestions-container');
+
+    // Play send sound
+    try {
+        // Create a simple beep sound using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 800;
+        gainNode.gain.value = 0.1;
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (e) {
+        console.log('Sound play error:', e);
+    }
+
+    // Check if the start chat button is visible
     if (startChatButton && startChatButton.style.display !== 'none') {
         // Hide the start button
         startChatButton.style.display = 'none';
@@ -58,8 +85,27 @@ async function handleQuestionClick(question) {
     // Add the question as a user message
     appendMessage('user', question);
 
-    // Show typing indicator
+    // Show typing indicator and play typing sound
     showTypingIndicator();
+
+    try {
+        // Create a simple typing sound using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.type = 'square';
+        oscillator.frequency.value = 200;
+        gainNode.gain.value = 0.05;
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.05);
+    } catch (e) {
+        console.log('Sound play error:', e);
+    }
 
     // Simulate processing time
     setTimeout(() => {
@@ -140,6 +186,7 @@ function createMessageHTML(sender, text) {
 
 // Function to append message to chat
 function appendMessage(sender, text) {
+    const messages = document.getElementById('messages');
     if (!messages) return;
 
     const messageHTML = createMessageHTML(sender, text);
@@ -186,6 +233,7 @@ function typeMessage(element, text, callback) {
 
 // Function to show typing indicator
 function showTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
     if (typingIndicator) {
         typingIndicator.style.display = 'flex';
     }
@@ -193,6 +241,7 @@ function showTypingIndicator() {
 
 // Function to hide typing indicator
 function hideTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
     if (typingIndicator) {
         typingIndicator.style.display = 'none';
     }
@@ -200,6 +249,7 @@ function hideTypingIndicator() {
 
 // Function to show suggestions
 function showSuggestions(suggestions) {
+    const suggestionsContainer = document.getElementById('suggestions-container');
     if (!suggestionsContainer || !suggestions || suggestions.length === 0) {
         clearSuggestions();
         return;
@@ -243,6 +293,7 @@ function showSuggestions(suggestions) {
 
 // Function to clear suggestions
 function clearSuggestions() {
+    const suggestionsContainer = document.getElementById('suggestions-container');
     if (suggestionsContainer) {
         // Remove all suggestion chips but keep the start button container
         const suggestionChips = suggestionsContainer.querySelectorAll('.suggestion-chip');
@@ -323,7 +374,12 @@ window.initializeChat = function() {
                 showSuggestions([
                     "What should I eat if I have an ulcer?",
                     "What foods should I avoid with an ulcer?",
-                    "What are the symptoms of a stomach ulcer?"
+                    "What are the symptoms of a stomach ulcer?",
+                    "How are ulcers treated?",
+                    "What causes ulcers?",
+                    "How can I prevent ulcers?",
+                    "What is the difference between gastric and duodenal ulcers?",
+                    "How long does it take for an ulcer to heal?"
                 ]);
             }, 1000);
         });
@@ -377,6 +433,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const userMsg = input.value.trim();
             if (!userMsg) return;
 
+            // Play send sound
+            try {
+                // Create a simple beep sound using Web Audio API
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 800;
+                gainNode.gain.value = 0.1;
+
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.1);
+            } catch (e) {
+                console.log('Sound play error:', e);
+            }
+
             // Add user message to chat
             appendMessage('user', userMsg);
             input.value = '';
@@ -384,28 +460,27 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show typing indicator
             showTypingIndicator();
 
-            // Check if we have a predefined answer for this question
-            if (questionAnswers[userMsg]) {
-                // Hide typing indicator
-                hideTypingIndicator();
-
-                // Add bot response with predefined answer
-                appendMessage('bot', questionAnswers[userMsg]);
-
-                // Add follow-up suggestions
-                setTimeout(() => {
-                    showSuggestions([
-                        "What should I eat if I have an ulcer?",
-                        "What foods should I avoid with an ulcer?",
-                        "What are the symptoms of a stomach ulcer?"
-                    ]);
-                }, 1000);
-
-                return;
-            }
-
-            // If no predefined answer, send to server
             try {
+                // Check if we have a predefined answer for this question
+                if (questionAnswers[userMsg]) {
+                    // Hide typing indicator
+                    hideTypingIndicator();
+
+                    // Add bot response with predefined answer
+                    appendMessage('bot', questionAnswers[userMsg]);
+
+                    // Add follow-up suggestions
+                    setTimeout(() => {
+                        showSuggestions([
+                            "What should I eat if I have an ulcer?",
+                            "What foods should I avoid with an ulcer?",
+                            "What are the symptoms of a stomach ulcer?"
+                        ]);
+                    }, 1000);
+
+                    return;
+                }
+
                 // Send message to server using Django's CSRF protection
                 const formData = new FormData();
                 formData.append('message', userMsg);
