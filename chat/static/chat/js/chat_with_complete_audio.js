@@ -100,182 +100,164 @@ async function handleQuestionClick(question) {
                 showSuggestions([
                     "What should I eat if I have an ulcer?",
                     "What foods should I avoid with an ulcer?",
-                    "What are the symptoms of a stomach ulcer?"
+                    "What are the symptoms of a stomach ulcer?",
+                    "How are ulcers treated?",
+                    "What causes ulcers?"
                 ]);
             }, 1000);
         } else {
-            // If no predefined answer, use the existing system to get a response
-            fetch('', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: new URLSearchParams({
-                    'csrfmiddlewaretoken': getCookie('csrftoken'),
-                    'message': question
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                appendMessage('bot', data.response);
+            // If no predefined answer, provide a generic response
+            appendMessage('bot', "I'm sorry, I don't have specific information about that question right now. Please try asking about ulcer symptoms, treatments, causes, or dietary recommendations.");
 
-                // Add follow-up suggestions after predefined ones
-                setTimeout(() => {
-                    showSuggestions([
-                        "What should I eat if I have an ulcer?",
-                        "What foods should I avoid with an ulcer?",
-                        "What are the symptoms of a stomach ulcer?"
-                    ]);
-                }, 1000);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                appendMessage('bot', "I'm sorry, I encountered an error. Please try again.");
-            });
+            // Add follow-up suggestions
+            setTimeout(() => {
+                showSuggestions([
+                    "What should I eat if I have an ulcer?",
+                    "What foods should I avoid with an ulcer?",
+                    "What are the symptoms of a stomach ulcer?",
+                    "How are ulcers treated?",
+                    "What causes ulcers?"
+                ]);
+            }, 1000);
         }
     }, 1500);
 }
 
 // Function to append a message to the chat
-function appendMessage(sender, message) {
+function appendMessage(sender, text) {
     const messages = document.getElementById('messages');
-    const messageElement = document.createElement('div');
-    messageElement.classList.add('message', sender);
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
 
-    // Convert newlines to <br> tags
-    const formattedMessage = message.replace(/\n/g, '<br>');
-    messageElement.innerHTML = formattedMessage;
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = sender === 'user' ? '<i class="bi bi-person-fill"></i>' : '<i class="bi bi-robot"></i>';
 
-    messages.appendChild(messageElement);
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.textContent = text;
+
+    const time = document.createElement('div');
+    time.className = 'message-time';
+    time.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    content.appendChild(time);
+
+    if (sender === 'user') {
+        messageDiv.appendChild(content);
+        messageDiv.appendChild(avatar);
+    } else {
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(content);
+    }
+
+    messages.appendChild(messageDiv);
     messages.scrollTop = messages.scrollHeight;
 }
 
 // Function to show typing indicator
 function showTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    typingIndicator.style.display = 'block';
     const messages = document.getElementById('messages');
-    const typingIndicator = document.createElement('div');
-    typingIndicator.id = 'typing-indicator';
-    typingIndicator.classList.add('message', 'bot');
-    typingIndicator.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
-    messages.appendChild(typingIndicator);
     messages.scrollTop = messages.scrollHeight;
 }
 
 // Function to hide typing indicator
 function hideTypingIndicator() {
     const typingIndicator = document.getElementById('typing-indicator');
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
+    typingIndicator.style.display = 'none';
 }
 
 // Function to show suggestions
-function showSuggestions(suggestions) {
-    const suggestionsContainer = document.getElementById('suggestions-container');
-
-    // Clear existing suggestions
+function showSuggestions(questions) {
+    const suggestionsContainer = document.getElementById('suggestions');
     suggestionsContainer.innerHTML = '';
 
-    // Add new suggestions
-    suggestions.forEach(suggestion => {
-        const chip = document.createElement('div');
-        chip.classList.add('suggestion-chip');
-        chip.textContent = suggestion;
-        chip.onclick = () => handleQuestionClick(suggestion);
+    questions.forEach(question => {
+        const chip = document.createElement('button');
+        chip.className = 'suggestion-chip';
+        chip.textContent = question;
+        chip.onclick = () => handleQuestionClick(question);
         suggestionsContainer.appendChild(chip);
     });
-
-    // Show suggestions container
-    suggestionsContainer.style.display = 'flex';
 }
 
-// Function to get CSRF token
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-// Initialize chat when DOM is fully loaded
+// Initialize chat when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     const startChatButton = document.getElementById('start-chat-button');
     const form = document.getElementById('input-form');
     const input = document.getElementById('message-input');
 
-    if (startChatButton) {
-        startChatButton.addEventListener('click', function() {
-            startChatButton.style.display = 'none';
-            appendMessage('bot', "Hello! I'm your ulcer specialist assistant. I can help you with questions about ulcers, treatments, diet, and lifestyle changes.");
-            showSuggestions([
-                "What should I eat if I have an ulcer?",
-                "What foods should I avoid with an ulcer?",
-                "What are the symptoms of a stomach ulcer?"
-            ]);
-        });
-    }
+    // Handle start chat button click
+    startChatButton.addEventListener('click', () => {
+        handleQuestionClick("What should I eat if I have an ulcer?");
+    });
 
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            const message = input.value.trim();
-            if (message) {
-                appendMessage('user', message);
-                input.value = '';
+        // Play send sound
+        try {
+            const sendSound = new Audio('../audio/send.mp3');
+            sendSound.play().catch(e => console.log('Send sound play error:', e));
+        } catch (e) {
+            console.log('Send sound error:', e);
+        }
 
-                // Show typing indicator
-                showTypingIndicator();
+        const message = input.value.trim();
+        if (message) {
+            appendMessage('user', message);
+            input.value = '';
 
-                // Play typing sound
-                try {
-                    const typingSound = new Audio('../audio/typing.mp3');
-                    typingSound.play().catch(e => console.log('Typing sound play error:', e));
-                } catch (e) {
-                    console.log('Typing sound error:', e);
-                }
+            // Show typing indicator and play typing sound
+            showTypingIndicator();
 
-                // Send message to server
-                fetch('', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: new URLSearchParams({
-                        'csrfmiddlewaretoken': getCookie('csrftoken'),
-                        'message': message
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    hideTypingIndicator();
-                    appendMessage('bot', data.response);
+            try {
+                const typingSound = new Audio('../audio/typing.mp3');
+                typingSound.play().catch(e => console.log('Typing sound play error:', e));
+            } catch (e) {
+                console.log('Typing sound error:', e);
+            }
+
+            // Simulate processing time
+            setTimeout(() => {
+                hideTypingIndicator();
+
+                // Check if message matches any predefined questions
+                let answer = questionAnswers[message];
+
+                if (answer) {
+                    // Use the predefined answer
+                    appendMessage('bot', answer);
 
                     // Add follow-up suggestions
                     setTimeout(() => {
                         showSuggestions([
                             "What should I eat if I have an ulcer?",
                             "What foods should I avoid with an ulcer?",
-                            "What are the symptoms of a stomach ulcer?"
+                            "What are the symptoms of a stomach ulcer?",
+                            "How are ulcers treated?",
+                            "What causes ulcers?"
                         ]);
                     }, 1000);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    hideTypingIndicator();
-                    appendMessage('bot', "I'm sorry, I encountered an error. Please try again.");
-                });
-            }
-        });
-    }
+                } else {
+                    // If no predefined answer, provide a generic response
+                    appendMessage('bot', "I'm sorry, I don't have specific information about that question right now. Please try asking about ulcer symptoms, treatments, causes, or dietary recommendations.");
+
+                    // Add follow-up suggestions
+                    setTimeout(() => {
+                        showSuggestions([
+                            "What should I eat if I have an ulcer?",
+                            "What foods should I avoid with an ulcer?",
+                            "What are the symptoms of a stomach ulcer?",
+                            "How are ulcers treated?",
+                            "What causes ulcers?"
+                        ]);
+                    }, 1000);
+                }
+            }, 1500);
+        }
+    });
 });

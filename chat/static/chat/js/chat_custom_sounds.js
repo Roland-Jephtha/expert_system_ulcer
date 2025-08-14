@@ -1,4 +1,3 @@
-// Make setInput globally accessible
 window.setInput = function(text) {
     const input = document.getElementById('message-input');
     const form = document.getElementById('input-form');

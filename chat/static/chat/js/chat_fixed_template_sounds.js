@@ -40,6 +40,34 @@ const questionAnswers = {
     "How long does it take for an ulcer to heal?": "The healing time for ulcers depends on several factors including the type of ulcer, its size, the cause, and the treatment approach:\n\n**With proper treatment:**\n• Most gastric ulcers heal within 6-8 weeks\n• Most duodenal ulcers heal within 4-6 weeks\n• Esophageal ulcers may take 8-12 weeks to heal\n\n**Factors affecting healing time:**\n• Size and depth of the ulcer\n• Cause (H. pylori vs. NSAID-induced)\n• Adherence to treatment plan\n• Overall health and age\n• Smoking and alcohol use\n• Stress levels\n\n**Treatment duration:**\n• Acid-reducing medications (PPIs or H2 blockers): 4-8 weeks\n• Antibiotics for H. pylori: 10-14 days\n• Follow-up testing for H. pylori: 4 weeks after completing antibiotics\n\n**Signs of healing:**\n• Reduction in pain and other symptoms\n• Improvement in appetite and weight\n• Healing of the ulcer as seen on follow-up endoscopy (if performed)\n\nIf ulcers don't heal with standard treatment, your healthcare provider may recommend additional testing or different treatment approaches. In rare cases, surgery may be needed to treat complications or ulcers that don't respond to other treatments."
 };
 
+// Function to play send sound
+function playSendSound() {
+    try {
+        console.log('Attempting to play send sound...');
+        // Try multiple possible paths for the send sound
+        const sendSound = new Audio('/static/chat/audio/send.mp3') || 
+                          new Audio('../audio/send.mp3') || 
+                          new Audio('audio/send.mp3');
+        sendSound.play().catch(e => console.log('Send sound play error:', e));
+    } catch (e) {
+        console.log('Send sound error:', e);
+    }
+}
+
+// Function to play typing sound
+function playTypingSound() {
+    try {
+        console.log('Attempting to play typing sound...');
+        // Try multiple possible paths for the typing sound
+        const typingSound = new Audio('/static/chat/audio/typing.mp3') || 
+                            new Audio('../audio/typing.mp3') || 
+                            new Audio('audio/typing.mp3');
+        typingSound.play().catch(e => console.log('Typing sound play error:', e));
+    } catch (e) {
+        console.log('Typing sound error:', e);
+    }
+}
+
 // Function to handle question clicks
 async function handleQuestionClick(question) {
     // Get references to DOM elements
@@ -51,24 +79,7 @@ async function handleQuestionClick(question) {
     const suggestionsContainer = document.getElementById('suggestions-container');
 
     // Play send sound
-    try {
-        // Create a simple beep sound using Web Audio API
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-
-        oscillator.type = 'sine';
-        oscillator.frequency.value = 800;
-        gainNode.gain.value = 0.1;
-
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.1);
-    } catch (e) {
-        console.log('Sound play error:', e);
-    }
+    playSendSound();
 
     // Check if the start chat button is visible
     if (startChatButton && startChatButton.style.display !== 'none') {
@@ -87,25 +98,7 @@ async function handleQuestionClick(question) {
 
     // Show typing indicator and play typing sound
     showTypingIndicator();
-
-    try {
-        // Create a simple typing sound using Web Audio API
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-
-        oscillator.type = 'square';
-        oscillator.frequency.value = 200;
-        gainNode.gain.value = 0.05;
-
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.05);
-    } catch (e) {
-        console.log('Sound play error:', e);
-    }
+    playTypingSound();
 
     // Simulate processing time
     setTimeout(() => {
@@ -186,7 +179,6 @@ function createMessageHTML(sender, text) {
 
 // Function to append message to chat
 function appendMessage(sender, text) {
-    const messages = document.getElementById('messages');
     if (!messages) return;
 
     const messageHTML = createMessageHTML(sender, text);
@@ -194,6 +186,7 @@ function appendMessage(sender, text) {
 
     // Get the last message element
     const lastMessage = messages.lastElementChild;
+
     if (lastMessage) {
         // Add animation class
         lastMessage.classList.add('message');
@@ -363,6 +356,9 @@ window.initializeChat = function() {
     // Add event listener for start chat button
     if (startChatButton) {
         startChatButton.addEventListener('click', async function() {
+            // Play send sound
+            playSendSound();
+
             // Hide the start button
             this.style.display = 'none';
 
@@ -374,12 +370,7 @@ window.initializeChat = function() {
                 showSuggestions([
                     "What should I eat if I have an ulcer?",
                     "What foods should I avoid with an ulcer?",
-                    "What are the symptoms of a stomach ulcer?",
-                    "How are ulcers treated?",
-                    "What causes ulcers?",
-                    "How can I prevent ulcers?",
-                    "What is the difference between gastric and duodenal ulcers?",
-                    "How long does it take for an ulcer to heal?"
+                    "What are the symptoms of a stomach ulcer?"
                 ]);
             }, 1000);
         });
@@ -429,29 +420,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-
             const userMsg = input.value.trim();
             if (!userMsg) return;
 
             // Play send sound
-            try {
-                // Create a simple beep sound using Web Audio API
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.type = 'sine';
-                oscillator.frequency.value = 800;
-                gainNode.gain.value = 0.1;
-
-                oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.1);
-            } catch (e) {
-                console.log('Sound play error:', e);
-            }
+            playSendSound();
 
             // Add user message to chat
             appendMessage('user', userMsg);

@@ -52,10 +52,16 @@ async function handleQuestionClick(question) {
 
     // Play send sound
     try {
+        console.log('Playing send sound...');
         const sendSound = new Audio('/static/chat/audio/send.mp3');
-        sendSound.play().catch(e => console.log('Send sound play error:', e));
+        sendSound.play().catch(e => {
+            console.error('Send sound play error:', e);
+            // Try alternative path
+            const sendSound2 = new Audio('../audio/send.mp3');
+            sendSound2.play().catch(e2 => console.error('Alternative send sound play error:', e2));
+        });
     } catch (e) {
-        console.log('Send sound error:', e);
+        console.error('Send sound error:', e);
     }
 
     // Check if the start chat button is visible
@@ -77,10 +83,16 @@ async function handleQuestionClick(question) {
     showTypingIndicator();
 
     try {
+        console.log('Playing typing sound...');
         const typingSound = new Audio('/static/chat/audio/typing.mp3');
-        typingSound.play().catch(e => console.log('Typing sound play error:', e));
+        typingSound.play().catch(e => {
+            console.error('Typing sound play error:', e);
+            // Try alternative path
+            const typingSound2 = new Audio('../audio/typing.mp3');
+            typingSound2.play().catch(e2 => console.error('Alternative typing sound play error:', e2));
+        });
     } catch (e) {
-        console.log('Typing sound error:', e);
+        console.error('Typing sound error:', e);
     }
 
     // Simulate processing time
@@ -100,188 +112,177 @@ async function handleQuestionClick(question) {
                 showSuggestions([
                     "What should I eat if I have an ulcer?",
                     "What foods should I avoid with an ulcer?",
-                    "What are the symptoms of a stomach ulcer?"
+                    "What are the symptoms of a stomach ulcer?",
+                    "How are ulcers treated?",
+                    "What causes ulcers?"
                 ]);
             }, 1000);
         } else {
-            // If no predefined answer, use the existing system to get a response
-            fetch('', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: `message=${encodeURIComponent(question)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                appendMessage('bot', data.response);
+            // If no predefined answer, provide a generic response
+            appendMessage('bot', "I'm sorry, I don't have specific information about that question right now. Please try asking about ulcer symptoms, treatments, causes, or dietary recommendations.");
 
-                // Add follow-up suggestions
-                setTimeout(() => {
-                    showSuggestions([
-                        "What should I eat if I have an ulcer?",
-                        "What foods should I avoid with an ulcer?",
-                        "What are the symptoms of a stomach ulcer?"
-                    ]);
-                }, 1000);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                appendMessage('bot', "I'm sorry, I encountered an error. Please try again.");
-            });
+            // Add follow-up suggestions
+            setTimeout(() => {
+                showSuggestions([
+                    "What should I eat if I have an ulcer?",
+                    "What foods should I avoid with an ulcer?",
+                    "What are the symptoms of a stomach ulcer?",
+                    "How are ulcers treated?",
+                    "What causes ulcers?"
+                ]);
+            }, 1000);
         }
-    }, 1000);
+    }, 1500);
 }
 
 // Function to append a message to the chat
-function appendMessage(sender, message) {
+function appendMessage(sender, text) {
     const messages = document.getElementById('messages');
-    const messageElement = document.createElement('div');
-    messageElement.className = `message ${sender}-message`;
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
 
-    // Replace newlines with <br> tags
-    const formattedMessage = message.replace(/\n/g, '<br>');
-    messageElement.innerHTML = formattedMessage;
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = sender === 'user' ? '<i class="bi bi-person-fill"></i>' : '<i class="bi bi-robot"></i>';
 
-    messages.appendChild(messageElement);
+    const content = document.createElement('div');
+    content.className = 'message-content';
+    content.textContent = text;
+
+    const time = document.createElement('div');
+    time.className = 'message-time';
+    time.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    content.appendChild(time);
+
+    if (sender === 'user') {
+        messageDiv.appendChild(content);
+        messageDiv.appendChild(avatar);
+    } else {
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(content);
+    }
+
+    messages.appendChild(messageDiv);
     messages.scrollTop = messages.scrollHeight;
 }
 
 // Function to show typing indicator
 function showTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    typingIndicator.style.display = 'block';
     const messages = document.getElementById('messages');
-    const typingIndicator = document.createElement('div');
-    typingIndicator.className = 'message bot-message typing-indicator';
-    typingIndicator.innerHTML = '<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>';
-
-    messages.appendChild(typingIndicator);
     messages.scrollTop = messages.scrollHeight;
 }
 
 // Function to hide typing indicator
 function hideTypingIndicator() {
-    const typingIndicator = document.querySelector('.typing-indicator');
-    if (typingIndicator) {
-        typingIndicator.remove();
-    }
+    const typingIndicator = document.getElementById('typing-indicator');
+    typingIndicator.style.display = 'none';
 }
 
 // Function to show suggestions
-function showSuggestions(suggestions) {
-    const suggestionsContainer = document.getElementById('suggestions-container');
+function showSuggestions(questions) {
+    const suggestionsContainer = document.getElementById('suggestions');
     suggestionsContainer.innerHTML = '';
 
-    suggestions.forEach(suggestion => {
-        const chip = document.createElement('div');
+    questions.forEach(question => {
+        const chip = document.createElement('button');
         chip.className = 'suggestion-chip';
-        chip.textContent = suggestion;
-        chip.onclick = () => handleQuestionClick(suggestion);
+        chip.textContent = question;
+        chip.onclick = () => handleQuestionClick(question);
         suggestionsContainer.appendChild(chip);
     });
 }
 
-// Function to get CSRF token
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 // Initialize chat when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Get references to DOM elements
     const startChatButton = document.getElementById('start-chat-button');
     const form = document.getElementById('input-form');
     const input = document.getElementById('message-input');
-    const messages = document.getElementById('messages');
-    const suggestionsContainer = document.getElementById('suggestions-container');
 
-    // Initialize the Start Chat button
-    if (startChatButton) {
-        startChatButton.addEventListener('click', () => {
-            startChatButton.style.display = 'none';
-            appendMessage('bot', "Hello! I'm your ulcer specialist assistant. I can help you with questions about ulcers, treatments, diet, and lifestyle changes.");
-
-            // Show initial suggestions
-            setTimeout(() => {
-                showSuggestions([
-                    "What should I eat if I have an ulcer?",
-                    "What foods should I avoid with an ulcer?",
-                    "What are the symptoms of a stomach ulcer?"
-                ]);
-            }, 1000);
-        });
-    }
+    // Handle start chat button click
+    startChatButton.addEventListener('click', () => {
+        handleQuestionClick("What should I eat if I have an ulcer?");
+    });
 
     // Handle form submission
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            // Play send sound
+        console.log('Form submitted, playing send sound...');
+
+        // Play send sound
+        try {
+            const sendSound = new Audio('/static/chat/audio/send.mp3');
+            sendSound.play().catch(e => {
+                console.error('Send sound play error:', e);
+                // Try alternative path
+                const sendSound2 = new Audio('../audio/send.mp3');
+                sendSound2.play().catch(e2 => console.error('Alternative send sound play error:', e2));
+            });
+        } catch (e) {
+            console.error('Send sound error:', e);
+        }
+
+        const message = input.value.trim();
+        if (message) {
+            appendMessage('user', message);
+            input.value = '';
+
+            // Show typing indicator and play typing sound
+            showTypingIndicator();
+
             try {
-                const sendSound = new Audio('/static/chat/audio/send.mp3');
-                sendSound.play().catch(e => console.log('Send sound play error:', e));
+                console.log('Playing typing sound...');
+                const typingSound = new Audio('/static/chat/audio/typing.mp3');
+                typingSound.play().catch(e => {
+                    console.error('Typing sound play error:', e);
+                    // Try alternative path
+                    const typingSound2 = new Audio('../audio/typing.mp3');
+                    typingSound2.play().catch(e2 => console.error('Alternative typing sound play error:', e2));
+                });
             } catch (e) {
-                console.log('Send sound error:', e);
+                console.error('Typing sound error:', e);
             }
 
-            const message = input.value.trim();
-            if (message) {
-                appendMessage('user', message);
-                input.value = '';
+            // Simulate processing time
+            setTimeout(() => {
+                hideTypingIndicator();
 
-                // Show typing indicator and play typing sound
-                showTypingIndicator();
+                // Check if message matches any predefined questions
+                let answer = questionAnswers[message];
 
-                try {
-                    const typingSound = new Audio('/static/chat/audio/typing.mp3');
-                    typingSound.play().catch(e => console.log('Typing sound play error:', e));
-                } catch (e) {
-                    console.log('Typing sound error:', e);
-                }
-
-                // Send message to server
-                fetch('', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'X-CSRFToken': getCookie('csrftoken'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: `message=${encodeURIComponent(message)}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    hideTypingIndicator();
-                    appendMessage('bot', data.response);
+                if (answer) {
+                    // Use the predefined answer
+                    appendMessage('bot', answer);
 
                     // Add follow-up suggestions
                     setTimeout(() => {
                         showSuggestions([
                             "What should I eat if I have an ulcer?",
                             "What foods should I avoid with an ulcer?",
-                            "What are the symptoms of a stomach ulcer?"
+                            "What are the symptoms of a stomach ulcer?",
+                            "How are ulcers treated?",
+                            "What causes ulcers?"
                         ]);
                     }, 1000);
-                })
-                .catch(error => {
-                    hideTypingIndicator();
-                    console.error('Error:', error);
-                    appendMessage('bot', "I'm sorry, I encountered an error. Please try again.");
-                });
-            }
-        });
-    }
+                } else {
+                    // If no predefined answer, provide a generic response
+                    appendMessage('bot', "I'm sorry, I don't have specific information about that question right now. Please try asking about ulcer symptoms, treatments, causes, or dietary recommendations.");
+
+                    // Add follow-up suggestions
+                    setTimeout(() => {
+                        showSuggestions([
+                            "What should I eat if I have an ulcer?",
+                            "What foods should I avoid with an ulcer?",
+                            "What are the symptoms of a stomach ulcer?",
+                            "How are ulcers treated?",
+                            "What causes ulcers?"
+                        ]);
+                    }, 1000);
+                }
+            }, 1500);
+        }
+    });
 });
