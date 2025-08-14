@@ -1,0 +1,168 @@
+# INTERACTIVE ULCER DIAGNOSIS SYSTEM
+
+## INITIAL WELCOME MESSAGE
+"Hello! I'm your ulcer diagnostic assistant. I'll ask you several questions about your symptoms to help determine if you might have an ulcer and provide recommendations. Please answer as accurately as possible for the best assessment."
+
+## DIAGNOSTIC QUESTIONS
+
+### Question 1: Pain Assessment
+"Please rate your stomach pain on a scale of 1-10, where 1 is very mild and 10 is the worst pain imaginable."
+
+### Question 2: Pain Location
+"Where is the pain located? (upper stomach, lower chest, behind breastbone, etc.)"
+
+### Question 3: Pain Timing
+"When does the pain occur? (after eating, on an empty stomach, at night, when lying down, etc.)"
+
+### Question 4: Other Symptoms
+"Are you experiencing any of these symptoms? (nausea, vomiting, bloating, heartburn, acid reflux, difficulty swallowing, black stools)"
+
+### Question 5: Risk Factors
+"Do you regularly take pain medications like aspirin, ibuprofen, or naproxen? How often do you consume alcohol? Do you smoke?"
+
+## DIAGNOSTIC ANALYSIS
+
+### Gastric Ulcer Assessment
+- If pain is in upper stomach and worsens after eating
+- If user reports nausea and feeling full quickly
+- If user has risk factors like H. pylori or NSAID use
+
+### Duodenal Ulcer Assessment
+- If pain is in upper abdomen below breastbone and improves after eating
+- If pain wakes user at night
+- If user reports heartburn or acid reflux
+- If user has risk factors like H. pylori or NSAID use
+
+### Esophageal Ulcer Assessment
+- If pain is in chest behind breastbone
+- If pain worsens when swallowing or lying down
+- If user reports difficulty swallowing
+- If user has history of acid reflux or GERD
+
+## TREATMENT RECOMMENDATIONS
+
+### For Gastric Ulcers
+"Based on your symptoms, you may have a gastric ulcer (stomach ulcer). Here are my recommendations:
+
+**Medication:**
+- Take Omeprazole 20mg twice daily before meals for 4-8 weeks
+- If H. pylori is suspected, you'll need antibiotics: Amoxicillin 500mg twice daily and Clarithromycin 500mg twice daily for 14 days
+- Consider taking antacids like Tums or Rolaids for immediate pain relief
+
+**Diet:**
+- Eat smaller, more frequent meals throughout the day
+- Focus on high-fiber foods like oats, brown rice, and vegetables
+- Include probiotic-rich foods like yogurt and kefir
+- Drink soothing herbal teas like chamomile or ginger
+
+**Foods to Avoid:**
+- Spicy foods (hot peppers, chili, curry)
+- Fatty or greasy foods (fried foods, fatty meats)
+- Highly acidic foods (tomatoes, citrus, vinegar)
+- Caffeine (coffee, strong tea)
+- Carbonated beverages
+- Alcohol
+- Chocolate
+- Processed snacks high in salt, sugar, or preservatives
+
+**Lifestyle Changes:**
+- Avoid smoking
+- Limit alcohol consumption
+- Manage stress through relaxation techniques
+- Don't lie down immediately after eating
+- Elevate the head of your bed when sleeping
+
+**Warning Signs:**
+Seek immediate medical attention if you experience:
+- Severe, sudden abdominal pain
+- Vomiting blood or material that looks like coffee grounds
+- Black or tarry stools
+- Unexplained weight loss
+- Persistent nausea or vomiting"
+
+### For Duodenal Ulcers
+"Based on your symptoms, you may have a duodenal ulcer (in the first part of your small intestine). Here are my recommendations:
+
+**Medication:**
+- Take Omeprazole 20mg twice daily before meals for 4-8 weeks
+- If H. pylori is suspected, you'll need antibiotics: Amoxicillin 500mg twice daily and Clarithromycin 500mg twice daily for 14 days
+- Consider taking antacids like Tums or Rolaids for immediate pain relief
+
+**Diet:**
+- Eat smaller, more frequent meals throughout the day
+- Include foods rich in vitamin A (sweet potatoes, carrots, spinach)
+- Add zinc-rich foods (pumpkin seeds, cashews, lean beef)
+- Drink plenty of water throughout the day
+
+**Foods to Avoid:**
+- Spicy foods (hot peppers, chili, curry)
+- Fatty or greasy foods (fried foods, fatty meats)
+- Highly acidic foods (tomatoes, citrus, vinegar)
+- Caffeine (coffee, strong tea)
+- Carbonated beverages
+- Alcohol
+- Chocolate
+- Processed snacks high in salt, sugar, or preservatives
+
+**Lifestyle Changes:**
+- Avoid smoking
+- Limit alcohol consumption
+- Manage stress through relaxation techniques
+- Don't lie down immediately after eating
+- Elevate the head of your bed when sleeping
+
+**Warning Signs:**
+Seek immediate medical attention if you experience:
+- Severe, sudden abdominal pain
+- Vomiting blood or material that looks like coffee grounds
+- Black or tarry stools
+- Unexplained weight loss
+- Persistent nausea or vomiting"
+
+### For Esophageal Ulcers
+"Based on your symptoms, you may have an esophageal ulcer (in your esophagus). Here are my recommendations:
+
+**Medication:**
+- Take Omeprazole 20mg twice daily before meals for 4-8 weeks
+- Consider additional medications for acid reflux like H2 blockers (ranitidine)
+- Take antacids like Tums or Rolaids for immediate pain relief
+
+**Diet:**
+- Eat smaller, more frequent meals throughout the day
+- Avoid spicy, acidic, and fatty foods
+- Include alkaline foods like bananas, melons, and oatmeal
+- Drink soothing herbal teas like chamomile or ginger
+
+**Foods to Avoid:**
+- Spicy foods (hot peppers, chili, curry)
+- Highly acidic foods (tomatoes, citrus, vinegar)
+- Fatty or greasy foods (fried foods, fatty meats)
+- Caffeine (coffee, strong tea)
+- Carbonated beverages
+- Alcohol
+- Chocolate
+- Processed snacks high in salt, sugar, or preservatives
+- Acidic fruits (citrus, pineapples, tomatoes)
+
+**Lifestyle Changes:**
+- Avoid smoking
+- Limit alcohol consumption
+- Manage stress through relaxation techniques
+- Don't lie down immediately after eating
+- Elevate the head of your bed when sleeping
+- Maintain a healthy weight
+
+**Warning Signs:**
+Seek immediate medical attention if you experience:
+- Severe, sudden chest pain
+- Difficulty swallowing or breathing
+- Vomiting blood or material that looks like coffee grounds
+- Black or tarry stools
+- Unexplained weight loss
+- Persistent nausea or vomiting"
+
+## FOLLOW-UP QUESTIONS
+"Have your symptoms improved with these recommendations? Are you experiencing any new symptoms?"
+
+## REASSESSMENT
+Based on user's follow-up response, provide adjusted recommendations or suggest consulting a healthcare provider if symptoms persist or worsen.

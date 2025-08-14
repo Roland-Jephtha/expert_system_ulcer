@@ -6,6 +6,7 @@ from collections import defaultdict
 
 # Path configurations
 KNOWLEDGE_PATH = os.path.join(os.path.dirname(__file__), 'templates', 'chat', 'knowledge.txt')
+ULCER_KNOWLEDGE_PATH = os.path.join(os.path.dirname(__file__), 'templates', 'chat', 'ulcer_knowledge.txt')
 STRUCTURED_FORMS_PATH = os.path.join(os.path.dirname(__file__), 'templates', 'chat', 'structured_forms.json')
 
 # Keywords that might trigger structured question flows
@@ -73,8 +74,18 @@ class ConversationContext:
 
 def load_knowledge_base():
     """Load the knowledge base from file"""
+    # Load regular knowledge base
     with open(KNOWLEDGE_PATH, 'r', encoding='utf-8') as f:
         entries = [line.strip() for line in f if line.strip()]
+
+    # Load ulcer-specific knowledge
+    try:
+        with open(ULCER_KNOWLEDGE_PATH, 'r', encoding='utf-8') as f:
+            ulcer_entries = [line.strip() for line in f if line.strip()]
+            entries.extend(ulcer_entries)
+    except FileNotFoundError:
+        pass  # If ulcer knowledge file doesn't exist, just use the regular knowledge base
+
     return entries
 
 
@@ -235,15 +246,25 @@ def process_structured_form_input(user_message, context):
         form_data = context.form_data.copy()
         forms = load_structured_forms()
 
-        # Generate response using the template
-        if form_type in forms and 'follow_up_template' in forms[form_type]:
-            template = forms[form_type]['follow_up_template']
-            try:
-                response = template.format(**form_data)
-            except KeyError:
-                response = f"Thank you for providing that information about your {form_type}."
+        # Generate specific responses based on ulcer diagnosis
+        if form_type == "ulcer_diagnosis":
+            response = generate_ulcer_diagnosis_response(form_data)
+        elif form_type == "ulcer_treatment":
+            response = generate_ulcer_treatment_response(form_data)
+        elif form_type == "ulcer_diet":
+            response = generate_ulcer_diet_response(form_data)
+        elif form_type == "ulcer_lifestyle":
+            response = generate_ulcer_lifestyle_response(form_data)
         else:
-            response = f"Thank you for providing that information about your {form_type}."
+            # Generate response using the template
+            if form_type in forms and 'follow_up_template' in forms[form_type]:
+                template = forms[form_type]['follow_up_template']
+                try:
+                    response = template.format(**form_data)
+                except KeyError:
+                    response = f"Thank you for providing that information about your {form_type}."
+            else:
+                response = f"Thank you for providing that information about your {form_type}."
 
         # End the form
         context.end_structured_form()
@@ -252,6 +273,118 @@ def process_structured_form_input(user_message, context):
     # Get the next question
     next_question = context.get_next_question()
     return next_question
+
+def generate_ulcer_diagnosis_response(form_data):
+    """Generate a specific ulcer diagnosis response based on user input"""
+    pain_location = form_data.get("pain_location", "")
+    pain_timing = form_data.get("pain_timing", "")
+    pain_severity = form_data.get("pain_severity", "")
+    pain_description = form_data.get("pain_description", "")
+    other_symptoms = form_data.get("other_symptoms", "")
+    nsaids_use = form_data.get("nsaids_use", "")
+    alcohol = form_data.get("alcohol", "")
+    smoking = form_data.get("smoking", "")
+    stress = form_data.get("stress", "")
+
+    # Determine ulcer type based on symptoms
+    ulcer_type = "gastric ulcer"
+    if "lower chest" in pain_location.lower() or "behind breastbone" in pain_location.lower():
+        if "improves" in pain_timing.lower() or "better after" in pain_timing.lower():
+            ulcer_type = "duodenal ulcer"
+        elif "worsens" in pain_timing.lower() or "worse when" in pain_timing.lower():
+            ulcer_type = "esophageal ulcer"
+
+    # Generate treatment recommendations
+    treatment_recommendations = ""
+    if ulcer_type == "gastric ulcer":
+        treatment_recommendations = "For gastric ulcers, take Omeprazole 20mg twice daily before meals for 4-8 weeks. If H. pylori is suspected, you'll need antibiotics: Amoxicillin 500mg twice daily and Clarithromycin 500mg twice daily for 14 days."
+    elif ulcer_type == "duodenal ulcer":
+        treatment_recommendations = "For duodenal ulcers, take Omeprazole 20mg twice daily before meals for 4-8 weeks. If H. pylori is suspected, you'll need antibiotics: Amoxicillin 500mg twice daily and Clarithromycin 500mg twice daily for 14 days."
+    elif ulcer_type == "esophageal ulcer":
+        treatment_recommendations = "For esophageal ulcers, take Omeprazole 20mg twice daily before meals for 4-8 weeks. Additionally, take an H2 blocker like Ranitidine 150mg twice daily. Avoid lying down for at least 3 hours after eating."
+
+    # Generate dietary recommendations
+    diet_recommendations = "Eat smaller, more frequent meals throughout the day. Focus on high-fiber foods like oats, brown rice, and vegetables. Include probiotic-rich foods like yogurt and kefir. Avoid spicy foods, fatty foods, caffeine, alcohol, and chocolate."
+
+    # Format the response
+    response = f"Based on your symptoms, particularly the {pain_severity}/10 {pain_description} pain in the {pain_location} that occurs {pain_timing}, along with {other_symptoms}, and considering your risk factors like {nsaids_use}, {alcohol} consumption, {smoking}, and {stress} levels, you may have a {ulcer_type}. {treatment_recommendations} {diet_recommendations}"
+
+    return response
+
+def generate_ulcer_treatment_response(form_data):
+    """Generate a specific ulcer treatment response based on user input"""
+    ulcer_type = form_data.get("ulcer_type", "gastric ulcer")
+    current_treatment = form_data.get("current_treatment", "none")
+    medication_allergies = form_data.get("medication_allergies", "none")
+    treatment_goals = form_data.get("treatment_goals", "pain relief and healing")
+
+    # Generate treatment recommendations
+    treatment_recommendations = ""
+    if ulcer_type == "gastric ulcer":
+        treatment_recommendations = "For gastric ulcers, take Omeprazole 20mg twice daily before meals for 4-8 weeks. If H. pylori is suspected, you'll need antibiotics: Amoxicillin 500mg twice daily and Clarithromycin 500mg twice daily for 14 days."
+    elif ulcer_type == "duodenal ulcer":
+        treatment_recommendations = "For duodenal ulcers, take Omeprazole 20mg twice daily before meals for 4-8 weeks. If H. pylori is suspected, you'll need antibiotics: Amoxicillin 500mg twice daily and Clarithromycin 500mg twice daily for 14 days."
+    elif ulcer_type == "esophageal ulcer":
+        treatment_recommendations = "For esophageal ulcers, take Omeprazole 20mg twice daily before meals for 4-8 weeks. Additionally, take an H2 blocker like Ranitidine 150mg twice daily. Avoid lying down for at least 3 hours after eating."
+
+    # Generate dietary recommendations
+    diet_recommendations = "Eat smaller, more frequent meals throughout the day. Focus on high-fiber foods like oats, brown rice, and vegetables. Include probiotic-rich foods like yogurt and kefir. Avoid spicy foods, fatty foods, caffeine, alcohol, and chocolate."
+
+    # Generate lifestyle recommendations
+    lifestyle_recommendations = "Avoid smoking, limit alcohol consumption, manage stress through relaxation techniques, and don't lie down immediately after eating. Elevate the head of your bed when sleeping."
+
+    # Format the response
+    response = f"For {ulcer_type} ulcers, {treatment_recommendations} {diet_recommendations} {lifestyle_recommendations}"
+
+    return response
+
+def generate_ulcer_diet_response(form_data):
+    """Generate a specific ulcer diet response based on user input"""
+    food_preferences = form_data.get("food_preferences", "")
+    allergies = form_data.get("allergies", "")
+    cooking_style = form_data.get("cooking_style", "")
+
+    # Generate foods to eat
+    foods_to_eat = "High-fiber foods: oats, barley, brown rice, whole grains. Probiotic-rich foods: yogurt, kefir, sauerkraut. Vitamin-rich fruits and vegetables: sweet potatoes, spinach, carrots. Lean proteins: skinless poultry, fish, tofu. Healthy fats: olive oil, avocado."
+
+    # Generate foods to avoid
+    foods_to_avoid = "Spicy foods: hot peppers, chili, curry. Fatty or greasy foods: fried foods, fatty meats. Highly acidic foods: tomatoes, citrus, vinegar. Caffeine: coffee, strong tea. Carbonated beverages. Alcohol. Chocolate. Processed snacks high in salt, sugar, or preservatives."
+
+    # Generate meal plan
+    meal_plan = "Breakfast: Oatmeal with bananas and honey. Lunch: Grilled chicken salad with olive oil dressing. Dinner: Baked salmon with steamed vegetables and brown rice. Snacks: Yogurt with berries, almonds, or rice cakes."
+
+    # Format the response
+    response = f"Based on your preferences, here are dietary recommendations for ulcers: {foods_to_eat} {foods_to_avoid} {meal_plan}"
+
+    return response
+
+def generate_ulcer_lifestyle_response(form_data):
+    """Generate a specific ulcer lifestyle response based on user input"""
+    stress_level = form_data.get("stress_level", "")
+    sleep_quality = form_data.get("sleep_quality", "")
+    exercise_frequency = form_data.get("exercise_frequency", "")
+    alcohol_consumption = form_data.get("alcohol_consumption", "")
+    smoking_status = form_data.get("smoking_status", "")
+
+    # Generate stress management recommendations
+    stress_management = "Manage stress through relaxation techniques like deep breathing, meditation, or yoga. Consider practicing mindfulness or tai chi."
+
+    # Generate sleep habits recommendations
+    sleep_habits = "Improve sleep quality by maintaining a consistent sleep schedule. Create a relaxing bedtime routine. Keep your bedroom cool, dark, and quiet. Avoid screens before bedtime."
+
+    # Generate exercise recommendations
+    exercise_recommendations = "Engage in moderate exercise like walking, swimming, or cycling for at least 30 minutes most days of the week. Avoid intense exercise that may stress your digestive system."
+
+    # Generate alcohol advice
+    alcohol_advice = "Limit alcohol consumption or avoid it completely. If you do drink, do so in moderation and with food."
+
+    # Generate smoking cessation advice
+    smoking_cessation = "Quit smoking to help your ulcers heal. Consider nicotine replacement therapy or seek professional help to quit."
+
+    # Format the response
+    response = f"Based on your lifestyle factors, here are recommendations for managing ulcers: {stress_management} {sleep_habits} {exercise_recommendations} {alcohol_advice} {smoking_cessation}"
+
+    return response
 
 
 # Global dictionary to store conversation contexts

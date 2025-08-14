@@ -1,0 +1,126 @@
+# ULCER KNOWLEDGE BASE
+
+## What Patients Should Eat or Avoid
+
+### Foods to Eat
+
+High-fiber foods: Oats, barley, brown rice, whole wheat bread, beans, lentils, apples, pears, bananas, carrots, broccoli, and leafy greens.
+
+Probiotic-rich foods: Yogurt with live cultures, kefir, sauerkraut, miso, kimchi, and tempeh to help balance gut bacteria.
+
+Vitamin A-rich foods: Sweet potatoes, spinach, kale, carrots, pumpkin.
+
+Vitamin C-rich foods: Oranges, papaya, strawberries, kiwi, tomatoes, bell peppers.
+
+Zinc-rich foods: Pumpkin seeds, cashews, lean beef, turkey, seafood.
+
+Gentle proteins: Skinless poultry, fish, tofu, eggs, low-fat dairy.
+
+Healthy fats: Olive oil, flaxseed oil, avocado, nuts (in moderation).
+
+Bland/mild foods: Steamed vegetables, boiled potatoes, rice porridge, plain crackers.
+
+Soothing beverages: Warm water, non-caffeinated herbal teas (chamomile, ginger).
+
+### Foods to Avoid
+
+Spicy foods: Hot peppers, chili, curry, wasabi.
+
+Fatty or greasy foods: Fried foods, fatty meats, creamy sauces.
+
+Highly acidic foods: Tomatoes, citrus fruits, vinegar, soda.
+
+Caffeine: Coffee, strong tea, chocolate.
+
+Carbonated beverages: Soda, sparkling water.
+
+Alcohol: Beer, wine, spirits.
+
+Excess milk: Can increase acid production.
+
+Processed snacks: High in salt, sugar, or preservatives.
+
+## Types of Ulcers
+
+### Gastric Ulcers (Stomach Ulcers)
+- Location: Lining of the stomach
+- Pain timing: Worsens after eating
+- Common symptoms: Nausea, bloating, feeling full quickly
+- Causes: H. pylori infection, NSAID use, stress
+
+### Duodenal Ulcers
+- Location: First part of the small intestine (duodenum)
+- Pain timing: Improves after eating, wakes at night
+- Common symptoms: Heartburn, acid reflux
+- Causes: H. pylori infection, NSAID use, smoking
+
+### Esophageal Ulcers
+- Location: Esophagus (food pipe)
+- Pain timing: Worsens when swallowing, when lying down
+- Common symptoms: Difficulty swallowing, regurgitation
+- Causes: Acid reflux, GERD, vomiting
+
+## Treatment Options
+
+### Medications
+
+Proton Pump Inhibitors (PPIs)
+- Omeprazole (Prilosec): 20mg twice daily before meals
+- Esomeprazole (Nexium): 20mg twice daily before meals
+- Lansoprazole (Prevacid): 15mg twice daily before meals
+- Duration: 4-8 weeks
+
+H2 Blockers
+- Ranitidine (Zantac): 150mg twice daily
+- Famotidine (Pepcid): 20mg twice daily
+- Cimetidine (Tagamet): 400mg twice daily
+- Duration: 4-8 weeks
+
+Antibiotics (for H. pylori)
+- Amoxicillin: 500mg twice daily
+- Clarithromycin: 500mg twice daily
+- Metronidazole: 500mg three times daily
+- Duration: 10-14 days
+
+Protective Medications
+- Sucralfate (Carafate): Coats ulcer to protect it from acid
+- Misoprostol (Cytotec): Reduces stomach acid production
+
+### Home Remedies
+
+- Eat smaller, more frequent meals
+- Avoid lying down after eating
+- Elevate head of bed when sleeping
+- Manage stress through relaxation techniques
+- Drink soothing herbal teas like chamomile or ginger
+
+## Risk Factors
+
+- H. pylori infection
+- Regular use of NSAIDs (aspirin, ibuprofen, naproxen)
+- Smoking
+- Excessive alcohol consumption
+- Stress
+- Family history of ulcers
+- Zollinger-Ellison syndrome
+
+## Warning Signs
+
+Seek immediate medical attention if you experience:
+
+- Severe, sudden abdominal pain
+- Vomiting blood or material that looks like coffee grounds
+- Black or tarry stools
+- Unexplained weight loss
+- Persistent nausea or vomiting
+- Difficulty eating or swallowing
+
+## Prevention
+
+- Wash hands thoroughly to prevent H. pylori infection
+- Use NSAIDs only when necessary and at the lowest effective dose
+- Take NSAIDs with food or a protective medication if needed long-term
+- Limit alcohol consumption
+- Don't smoke
+- Manage stress through relaxation techniques
+- Eat a balanced diet and maintain a healthy weight

@@ -1,0 +1,107 @@
+# ULCER DIAGNOSIS AND TREATMENT SYSTEM
+
+## DIAGNOSTIC ALGORITHM
+
+### Step 1: Pain Assessment
+- Ask user to rate their pain on a scale of 1-10
+- Ask about pain location (upper stomach, lower chest, etc.)
+- Ask when pain occurs (after eating, on empty stomach, at night)
+
+### Step 2: Symptom Assessment
+- Ask about nausea, vomiting, bloating
+- Ask about appetite changes
+- Ask about heartburn or acid reflux
+- Ask about black or bloody stools
+
+### Step 3: Risk Factor Assessment
+- Ask about NSAID use (aspirin, ibuprofen)
+- Ask about alcohol consumption
+- Ask about smoking
+- Ask about stress levels
+- Ask about family history of ulcers
+
+## ULCER TYPE DETERMINATION
+
+### Gastric Ulcers (Stomach Ulcers)
+- Pain location: Upper stomach
+- Pain timing: Worsens after eating
+- Other symptoms: Nausea, bloating, feeling full quickly
+- Risk factors: H. pylori infection, NSAID use, stress
+
+### Duodenal Ulcers
+- Pain location: Upper abdomen, slightly below the breastbone
+- Pain timing: Improves after eating, wakes at night
+- Other symptoms: Heartburn, acid reflux
+- Risk factors: H. pylori infection, NSAID use, smoking
+
+### Esophageal Ulcers
+- Pain location: Chest, behind breastbone
+- Pain timing: Worsens when swallowing, when lying down
+- Other symptoms: Difficulty swallowing, regurgitation
+- Risk factors: Acid reflux, GERD, vomiting
+
+## TREATMENT RECOMMENDATIONS
+
+### For H. pylori Positive Ulcers
+- Antibiotics: Amoxicillin 500mg twice daily, Clarithromycin 500mg twice daily, Metronidazole 500mg three times daily
+- Proton Pump Inhibitor: Omeprazole 20mg twice daily
+- Duration: 10-14 days for antibiotics, 4-8 weeks for PPI
+- Follow-up: Test for H. pylori eradication after 4 weeks
+
+### For NSAID-Induced Ulcers
+- Discontinue NSAIDs if possible
+- Proton Pump Inhibitor: Omeprazole 20mg once daily
+- Alternative pain relievers: Acetaminophen instead of NSAIDs
+- Duration: 4-8 weeks
+
+### For Stress-Related Ulcers
+- Proton Pump Inhibitor: Omeprazole 20mg twice daily
+- Stress management techniques
+- Acid-reducing medications
+- Duration: 4-8 weeks
+
+## DIETARY RECOMMENDATIONS
+
+### Foods to Eat
+- High-fiber foods: Oats, barley, brown rice, whole grains
+- Probiotic-rich foods: Yogurt, kefir, sauerkraut
+- Vitamin-rich fruits and vegetables: Sweet potatoes, spinach, carrots
+- Lean proteins: Skinless poultry, fish, tofu
+- Healthy fats: Olive oil, avocado
+- Bland/mild foods: Steamed vegetables, boiled potatoes, rice porridge
+- Soothing beverages: Warm water, non-caffeinated herbal teas
+
+### Foods to Avoid
+- Spicy foods: Hot peppers, chili, curry
+- Fatty or greasy foods: Fried foods, fatty meats
+- Highly acidic foods: Tomatoes, citrus, vinegar
+- Caffeine: Coffee, strong tea
+- Carbonated beverages
+- Alcohol
+- Excess milk
+- Chocolate
+- Processed snacks high in salt, sugar, or preservatives
+
+## LIFESTYLE RECOMMENDATIONS
+- Avoid smoking
+- Limit alcohol consumption
+- Manage stress through relaxation techniques
+- Eat smaller, more frequent meals
+- Avoid lying down after eating
+- Elevate head of bed when sleeping
+- Maintain a healthy weight
+
+## WARNING SIGNS REQUIRING IMMEDIATE MEDICAL ATTENTION
+- Severe, sudden abdominal pain
+- Vomiting blood or material that looks like coffee grounds
+- Black or tarry stools
+- Unexplained weight loss
+- Persistent nausea or vomiting
+- Difficulty eating or swallowing
+
+## FOLLOW-UP RECOMMENDATIONS
+- Complete full course of medications
+- Schedule follow-up appointment with healthcare provider
+- Repeat testing if symptoms persist
+- Monitor for recurrence of symptoms
+- Make recommended lifestyle changes

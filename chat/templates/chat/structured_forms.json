@@ -1,47 +1,47 @@
 {
-    "ulcer_symptom_assessment": {
-        "trigger_phrases": ["pain", "stomach ache", "burning", "ulcer", "indigestion", "discomfort", "nausea", "bloating"],
+    "ulcer_diagnosis": {
+        "trigger_phrases": ["pain", "stomach ache", "burning", "ulcer", "indigestion", "discomfort", "nausea", "bloating", "diagnose", "what type", "treatment", "cure"],
         "questions": {
-            "location": "Where is the pain located? (upper stomach, lower chest, etc.)",
-            "duration": "How long have you been experiencing these symptoms?",
-            "pain_description": "How would you describe the pain? (burning, gnawing, aching, etc.)",
-            "pain_timing": "When does the pain occur? (after eating, on an empty stomach, at night, etc.)",
-            "severity": "On a scale of 1-10, how severe is the pain?",
-            "other_symptoms": "Are you experiencing any other symptoms like nausea, vomiting, bloating, or black stools?"
-        },
-        "follow_up_template": "Based on your {severity} {pain_description} pain in the {location} that occurs {pain_timing}, along with {other_symptoms}, I recommend consulting with a healthcare provider for proper diagnosis and treatment."
-    },
-    "ulcer_risk_factors": {
-        "trigger_phrases": ["risk", "cause", "why", "how", "prevent", "avoid"],
-        "questions": {
-            "nsaids_use": "Do you regularly take NSAIDs like aspirin, ibuprofen, or naproxen?",
+            "pain_location": "Where is the pain located? (upper stomach, lower chest, behind breastbone, etc.)",
+            "pain_timing": "When does the pain occur? (after eating, on an empty stomach, at night, when lying down, etc.)",
+            "pain_severity": "On a scale of 1-10, how severe is the pain?",
+            "pain_description": "How would you describe the pain? (burning, gnawing, aching, sharp, etc.)",
+            "other_symptoms": "Are you experiencing any other symptoms like nausea, vomiting, bloating, heartburn, acid reflux, or black stools?",
+            "nsaids_use": "Do you regularly take pain medications like aspirin, ibuprofen, or naproxen?",
             "alcohol": "How often do you consume alcohol?",
             "smoking": "Do you smoke or use tobacco products?",
-            "stress": "How would you rate your current stress level?",
-            "family_history": "Has anyone in your family been diagnosed with ulcers?",
-            "previous_ulcers": "Have you been diagnosed with ulcers before?"
+            "stress": "How would you rate your current stress level?"
         },
-        "follow_up_template": "Based on your risk factors including {nsaids_use}, {alcohol} consumption, {smoking}, and {stress} levels, your ulcer risk appears to be {risk_level}. I recommend {recommendations}."
+        "follow_up_template": "Based on your symptoms, particularly the {pain_severity}/10 {pain_description} pain in the {pain_location} that occurs {pain_timing}, along with {other_symptoms}, and considering your risk factors like {nsaids_use}, {alcohol} consumption, {smoking}, and {stress} levels, you may have a {ulcer_type}. {treatment_recommendations} {diet_recommendations}"
     },
-    "ulcer_treatment_assessment": {
-        "trigger_phrases": ["treatment", "cure", "heal", "medicine", "medication", "antibiotics", "pills"],
+    "ulcer_treatment": {
+        "trigger_phrases": ["treatment", "cure", "heal", "medicine", "medication", "antibiotics", "pills", "how to treat"],
         "questions": {
+            "ulcer_type": "What type of ulcer do you think you have? (gastric, duodenal, esophageal)",
             "current_treatment": "What treatment, if any, are you currently receiving?",
             "medication_allergies": "Do you have any known medication allergies?",
-            "previous_treatments": "Have you tried any treatments before? How did they work?",
             "treatment_goals": "What are your primary goals for treatment? (pain relief, healing, prevention)"
         },
-        "follow_up_template": "Based on your current situation with {current_treatment} and {treatment_goals}, I recommend {treatment_recommendations}. Always follow your healthcare provider's advice."
+        "follow_up_template": "For {ulcer_type} ulcers, {treatment_recommendations} {diet_recommendations} {lifestyle_recommendations}"
     },
-    "ulcer_type_assessment": {
-        "trigger_phrases": ["type", "kind", "gastric", "duodenal", "stomach", "intestine"],
+    "ulcer_diet": {
+        "trigger_phrases": ["diet", "food", "eat", "avoid", "what to eat", "what not to eat", "meal plan"],
         "questions": {
-            "pain_location": "Where exactly is the pain located?",
-            "pain_relief": "Does eating food help or worsen the pain?",
-            "night_pain": "Does the pain wake you up at night?",
-            "acid_reflux": "Do you experience acid reflux or heartburn?",
-            "appetite": "Has your appetite changed recently?"
+            "food_preferences": "Do you have any food preferences or restrictions?",
+            "allergies": "Do you have any food allergies?",
+            "cooking_style": "How do you prefer your meals cooked? (baked, grilled, steamed, etc.)"
         },
-        "follow_up_template": "Based on your symptoms, particularly the {pain_location} that {pain_relief} when you eat, and {night_pain} at night, your symptoms may suggest a {ulcer_type}. This should be confirmed by a healthcare provider."
+        "follow_up_template": "Based on your preferences, here are dietary recommendations for ulcers: {foods_to_eat} {foods_to_avoid} {meal_plan}"
+    },
+    "ulcer_lifestyle": {
+        "trigger_phrases": ["lifestyle", "habits", "daily routine", "stress", "sleep", "exercise"],
+        "questions": {
+            "stress_level": "How would you rate your current stress level?",
+            "sleep_quality": "How would you describe your sleep quality?",
+            "exercise_frequency": "How often do you exercise?",
+            "alcohol_consumption": "How often do you consume alcohol?",
+            "smoking_status": "Do you smoke or use tobacco products?"
+        },
+        "follow_up_template": "Based on your lifestyle factors, here are recommendations for managing ulcers: {stress_management} {sleep_habits} {exercise_recommendations} {alcohol_advice} {smoking_cessation}"
     }
 }
