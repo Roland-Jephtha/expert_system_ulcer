@@ -9,7 +9,26 @@ from .manual_engine import process_message, extract_questions, contexts
 class ChatView(View):
     def get(self, request):
         # For GET requests, provide possible questions
-        questions = extract_questions()
+        # First get the general questions from the knowledge base
+        general_questions = extract_questions()
+
+        # Add specific ulcer-related questions
+        ulcer_questions = [
+            "What should I eat if I have an ulcer?",
+            "What foods should I avoid with an ulcer?",
+            "What are the symptoms of a stomach ulcer?",
+            "How are ulcers treated?",
+            "What causes ulcers?",
+            "How can I prevent ulcers?",
+            "What is the difference between gastric and duodenal ulcers?",
+            "How long does it take for an ulcer to heal?"
+        ]
+
+        
+
+        # Combine the questions, prioritizing ulcer-related ones
+        questions = ulcer_questions + general_questions
+
         return render(request, 'chat/chat.html', {'questions': questions})
 
     @method_decorator(csrf_exempt)

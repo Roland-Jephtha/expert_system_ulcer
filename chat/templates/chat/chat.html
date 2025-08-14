@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+    {% load static %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -233,6 +236,78 @@
             animation-delay: 0.4s;
         }
 
+        .start-chat-button-container {
+            text-align: center;
+            margin-top: 1rem;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .start-chat-button {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 25px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .start-chat-button:hover {
+            background-color: #2e59d9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .message {
+            opacity: 0;
+            animation: messageSlide 0.3s ease forwards;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .suggestion-chip {
+            animation: chipFadeIn 0.3s ease forwards;
+            animation-fill-mode: both;
+        }
+
+        @keyframes chipFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .suggestion-chip:nth-child(1) { animation-delay: 0.1s; }
+        .suggestion-chip:nth-child(2) { animation-delay: 0.2s; }
+        .suggestion-chip:nth-child(3) { animation-delay: 0.3s; }
+        .suggestion-chip:nth-child(4) { animation-delay: 0.4s; }
+        .suggestion-chip:nth-child(5) { animation-delay: 0.5s; }
+        .suggestion-chip:nth-child(6) { animation-delay: 0.6s; }
+        .suggestion-chip:nth-child(7) { animation-delay: 0.7s; }
+        .suggestion-chip:nth-child(8) { animation-delay: 0.8s; }
+
         @keyframes typing {
             0% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
@@ -286,12 +361,16 @@
                 <!-- Initial welcome message will be added by JavaScript -->
             </div>
 
-            <div class="suggestions-container">
+            <div class="suggestions-container" id="suggestions-container">
                 <div class="suggestions-title">Common questions</div>
                 <div class="suggestion-chips" id="suggestions">
-                    {% for q in questions %}
-                        <button class="suggestion-chip" onclick="setInput('{{ q|escapejs }}')">{{ q }}</button>
-                    {% endfor %}
+                    <!-- Questions will be added by JavaScript -->
+                </div>
+                <div class="start-chat-button-container">
+                    <button class="btn btn-primary start-chat-button" id="start-chat-button">
+                        <i class="bi bi-chat-dots-fill me-2"></i>
+                        Start Chat
+                    </button>
                 </div>
             </div>
         </div>
@@ -315,7 +394,7 @@
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JavaScript -->
-    {% load static %}
-    <script src="{% static 'chat/js/chat.js' %}"></script>
+    <script src="{% static 'chat/js/chat_fixed_scope.js' %}"></script>
+
 </body>
 </html>
