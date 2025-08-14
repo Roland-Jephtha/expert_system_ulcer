@@ -1,0 +1,86 @@
+/* Custom styles for the expert system chat */
+
+/* Chat container styling */
+.chat-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 2rem);
+    max-width: 900px;
+    margin: 1rem auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    overflow: hidden;
+}
+
+/* Custom scrollbar */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Message animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Suggestion chips animation */
+.suggestion-chip {
+    transition: all 0.2s ease;
+}
+
+.suggestion-chip:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Typing indicator animation */
+@keyframes typing {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+.typing-indicator span {
+    animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chat-container {
+        margin: 0;
+        border-radius: 0;
+        height: 100vh;
+    }
+
+    .message-content {
+        max-width: 85%;
+    }
+}

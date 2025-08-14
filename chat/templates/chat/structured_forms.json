@@ -1,0 +1,47 @@
+{
+    "ulcer_symptom_assessment": {
+        "trigger_phrases": ["pain", "stomach ache", "burning", "ulcer", "indigestion", "discomfort", "nausea", "bloating"],
+        "questions": {
+            "location": "Where is the pain located? (upper stomach, lower chest, etc.)",
+            "duration": "How long have you been experiencing these symptoms?",
+            "pain_description": "How would you describe the pain? (burning, gnawing, aching, etc.)",
+            "pain_timing": "When does the pain occur? (after eating, on an empty stomach, at night, etc.)",
+            "severity": "On a scale of 1-10, how severe is the pain?",
+            "other_symptoms": "Are you experiencing any other symptoms like nausea, vomiting, bloating, or black stools?"
+        },
+        "follow_up_template": "Based on your {severity} {pain_description} pain in the {location} that occurs {pain_timing}, along with {other_symptoms}, I recommend consulting with a healthcare provider for proper diagnosis and treatment."
+    },
+    "ulcer_risk_factors": {
+        "trigger_phrases": ["risk", "cause", "why", "how", "prevent", "avoid"],
+        "questions": {
+            "nsaids_use": "Do you regularly take NSAIDs like aspirin, ibuprofen, or naproxen?",
+            "alcohol": "How often do you consume alcohol?",
+            "smoking": "Do you smoke or use tobacco products?",
+            "stress": "How would you rate your current stress level?",
+            "family_history": "Has anyone in your family been diagnosed with ulcers?",
+            "previous_ulcers": "Have you been diagnosed with ulcers before?"
+        },
+        "follow_up_template": "Based on your risk factors including {nsaids_use}, {alcohol} consumption, {smoking}, and {stress} levels, your ulcer risk appears to be {risk_level}. I recommend {recommendations}."
+    },
+    "ulcer_treatment_assessment": {
+        "trigger_phrases": ["treatment", "cure", "heal", "medicine", "medication", "antibiotics", "pills"],
+        "questions": {
+            "current_treatment": "What treatment, if any, are you currently receiving?",
+            "medication_allergies": "Do you have any known medication allergies?",
+            "previous_treatments": "Have you tried any treatments before? How did they work?",
+            "treatment_goals": "What are your primary goals for treatment? (pain relief, healing, prevention)"
+        },
+        "follow_up_template": "Based on your current situation with {current_treatment} and {treatment_goals}, I recommend {treatment_recommendations}. Always follow your healthcare provider's advice."
+    },
+    "ulcer_type_assessment": {
+        "trigger_phrases": ["type", "kind", "gastric", "duodenal", "stomach", "intestine"],
+        "questions": {
+            "pain_location": "Where exactly is the pain located?",
+            "pain_relief": "Does eating food help or worsen the pain?",
+            "night_pain": "Does the pain wake you up at night?",
+            "acid_reflux": "Do you experience acid reflux or heartburn?",
+            "appetite": "Has your appetite changed recently?"
+        },
+        "follow_up_template": "Based on your symptoms, particularly the {pain_location} that {pain_relief} when you eat, and {night_pain} at night, your symptoms may suggest a {ulcer_type}. This should be confirmed by a healthcare provider."
+    }
+}
