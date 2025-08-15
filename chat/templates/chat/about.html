@@ -1,0 +1,419 @@
+{% extends 'base.html' %}
+
+{% block title %}About - Expert System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem 0;
+    }
+
+    .about-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .about-header h1 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 1rem;
+    }
+
+    .about-header p {
+        font-size: 1.1rem;
+        color: #858796;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.25rem 2rem 0 rgba(58, 59, 69, 0.2);
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: rgba(78, 115, 223, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-icon i {
+        font-size: 1.75rem;
+        color: var(--primary-color);
+    }
+
+    .feature-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 1rem;
+    }
+
+    .feature-text {
+        color: #858796;
+        margin-bottom: 0;
+    }
+
+    .team-section {
+        margin-top: 4rem;
+    }
+
+    .team-section h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .team-member {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .team-member-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+        border: 3px solid #e3e6f0;
+    }
+
+    .team-member-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 0.25rem;
+    }
+
+    .team-member-title {
+        font-size: 0.875rem;
+        color: #858796;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-member-bio {
+        font-size: 0.875rem;
+        color: #858796;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .mission-section {
+        background: linear-gradient(45deg, var(--primary-color), #224abe);
+        color: white;
+        padding: 3rem 0;
+        border-radius: 10px;
+        margin: 3rem 0;
+        text-align: center;
+    }
+
+    .mission-section h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+
+    .mission-section p {
+        font-size: 1.1rem;
+        max-width: 800px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .stats-container {
+        display: flex;
+        justify-content: space-around;
+        margin: 3rem 0;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 0 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        color: #858796;
+    }
+
+    .faq-section {
+        margin-top: 3rem;
+    }
+
+    .faq-section h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .accordion-item {
+        border: none;
+        margin-bottom: 1rem;
+        border-radius: 0.35rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    }
+
+    .accordion-header {
+        border-radius: 0.35rem;
+    }
+
+    .accordion-button {
+        font-weight: 600;
+        color: #5a5c69;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(78, 115, 223, 0.1);
+        color: var(--primary-color);
+        box-shadow: none;
+    }
+
+    .accordion-button:focus {
+        box-shadow: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <!-- Header Section -->
+    <div class="about-header">
+        <h1>About Our Expert System</h1>
+        <p>Our AI-powered expert system provides accurate information and guidance about ulcers, their symptoms, treatments, and management strategies. We combine medical knowledge with advanced technology to help you make informed decisions about your health.</p>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-container">
+        <div class="stat-item">
+            <div class="stat-number">10K+</div>
+            <div class="stat-label">Users Helped</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">98%</div>
+            <div class="stat-label">Accuracy</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Available</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Expert Contributors</div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <h2 class="text-center mb-4">Key Features</h2>
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-chat-dots"></i>
+                </div>
+                <h3 class="feature-title">Interactive Chat</h3>
+                <p class="feature-text">Engage in natural conversations with our AI expert to get personalized advice and answers to your ulcer-related questions.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-journal-medical"></i>
+                </div>
+                <h3 class="feature-title">Medical Knowledge</h3>
+                <p class="feature-text">Access comprehensive, evidence-based information about ulcer causes, symptoms, diagnosis, and treatment options.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h3 class="feature-title">Progress Tracking</h3>
+                <p class="feature-text">Monitor your symptoms and track your progress over time with our interactive tools and history tracking.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h3 class="feature-title">Privacy First</h3>
+                <p class="feature-text">Your health information is secure and private. We use industry-standard encryption to protect your data.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-lightbulb"></i>
+                </div>
+                <h3 class="feature-title">Personalized Advice</h3>
+                <p class="feature-text">Get tailored recommendations based on your specific symptoms, medical history, and lifestyle factors.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-phone"></i>
+                </div>
+                <h3 class="feature-title">Mobile Friendly</h3>
+                <p class="feature-text">Access our expert system anytime, anywhere from your smartphone, tablet, or computer.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Section -->
+    <div class="mission-section">
+        <h2>Our Mission</h2>
+        <p>We're dedicated to making reliable medical information about ulcers accessible to everyone, regardless of location, language, or technical expertise. Our goal is to empower individuals with knowledge that can help them make informed decisions about their health and improve their quality of life.</p>
+    </div>
+
+    <!-- Team Section -->
+    <div class="team-section">
+        <h2>Meet Our Team</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="team-member">
+                    <img src="https://picsum.photos/seed/doctor1/150/150.jpg" alt="Dr. Sarah Johnson" class="team-member-img">
+                    <h4 class="team-member-name">Dr. Sarah Johnson</h4>
+                    <p class="team-member-title">Medical Director</p>
+                    <p class="team-member-bio">Gastroenterologist with over 15 years of experience in ulcer diagnosis and treatment.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="team-member">
+                    <img src="https://picsum.photos/seed/developer1/150/150.jpg" alt="Michael Chen" class="team-member-img">
+                    <h4 class="team-member-name">Michael Chen</h4>
+                    <p class="team-member-title">Lead Developer</p>
+                    <p class="team-member-bio">AI specialist with expertise in natural language processing and medical informatics.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="team-member">
+                    <img src="https://picsum.photos/seed/researcher1/150/150.jpg" alt="Dr. Emily Rodriguez" class="team-member-img">
+                    <h4 class="team-member-name">Dr. Emily Rodriguez</h4>
+                    <p class="team-member-title">Research Lead</p>
+                    <p class="team-member-bio">Medical researcher focused on digestive health and patient education.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                        Is this expert system a substitute for medical advice?
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                    <div class="accordion-body">
+                        No, our expert system is designed to provide information and support, but it is not a substitute for professional medical advice. Always consult with a qualified healthcare provider for diagnosis and treatment of any medical condition.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                        How accurate is the information provided by the system?
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                    <div class="accordion-body">
+                        Our expert system is built on evidence-based medical knowledge and is regularly updated by healthcare professionals. We strive to provide information that is accurate, up-to-date, and in line with current medical guidelines. However, medicine is a rapidly evolving field, and we recommend cross-referencing important information with reliable sources.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                        Is my personal information secure?
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                    <div class="accordion-body">
+                        Yes, we take your privacy seriously. All personal information is encrypted and stored securely. We do not share your health information with third parties without your explicit consent. For more details, please review our Privacy Policy.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                        How often is the system updated?
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+                    <div class="accordion-body">
+                        Our expert system is continuously updated with the latest medical research and guidelines. Our team of medical professionals and researchers regularly review and update the knowledge base to ensure you have access to the most current information.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">
+                        Can I use this service on my mobile device?
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                    <div class="accordion-body">
+                        Yes, our expert system is fully responsive and works on all devices, including smartphones and tablets. You can access it through your mobile browser or download our mobile app from the App Store or Google Play.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="text-center mt-5 mb-4">
+        <h2>Get in Touch</h2>
+        <p class="mb-4">Have questions or feedback? We'd love to hear from you!</p>
+        <a href="#" class="btn btn-primary">Contact Us</a>
+    </div>
+</div>
+{% endblock %}

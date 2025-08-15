@@ -1,0 +1,197 @@
+{% extends 'dashboard/sidebar_base.html' %}
+
+{% block title %}History - Expert System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .history-table {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .table thead th {
+        border-top: none;
+        font-weight: 600;
+        color: #1a2a6c;
+    }
+
+    .badge-category {
+        font-size: 0.75rem;
+        padding: 0.4em 0.65em;
+    }
+
+    .btn-action {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        margin-right: 0.25rem;
+    }
+
+    .filter-card {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="page-header">
+        <h1>Consultation History</h1>
+        <p class="text-muted">Review your past consultations and health information</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-card">
+        <form method="get">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="date_from" class="form-label">From Date</label>
+                    <input type="date" class="form-control" id="date_from" name="date_from">
+                </div>
+                <div class="col-md-3">
+                    <label for="date_to" class="form-label">To Date</label>
+                    <input type="date" class="form-control" id="date_to" name="date_to">
+                </div>
+                <div class="col-md-4">
+                    <label for="category" class="form-label">Category</label>
+                    <select class="form-select" id="category" name="category">
+                        <option selected>All Categories</option>
+                        <option>Ulcer Treatment</option>
+                        <option>Symptom Analysis</option>
+                        <option>Diet & Nutrition</option>
+                        <option>Medication</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- History Table -->
+    <div class="history-table">
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+            <h5 class="mb-0">Recent Consultations</h5>
+            <div>
+                <button type="button" class="btn btn-sm btn-outline-secondary me-2">
+                    <i class="bi bi-download me-1"></i> Export
+                </button>
+                <button type="button" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus-circle me-1"></i> New Consultation
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Topic</th>
+                        <th>Category</th>
+                        <th>Summary</th>
+                        <th width="120">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2023-05-15</td>
+                        <td>Ulcer Diet Consultation</td>
+                        <td><span class="badge bg-primary badge-category">Diet & Nutrition</span></td>
+                        <td>Discussed dietary recommendations for ulcer management, including foods to avoid and those that promote healing.</td>
+                        <td>
+                            <button class="btn btn-sm btn-info btn-action">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning btn-action">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2023-05-10</td>
+                        <td>Symptom Analysis</td>
+                        <td><span class="badge bg-success badge-category">Symptom Analysis</span></td>
+                        <td>Analyzed reported symptoms and provided initial recommendations for ulcer treatment.</td>
+                        <td>
+                            <button class="btn btn-sm btn-info btn-action">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning btn-action">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2023-05-05</td>
+                        <td>Treatment Options</td>
+                        <td><span class="badge bg-warning badge-category">Treatment</span></td>
+                        <td>Reviewed various treatment approaches for ulcers, including medications and lifestyle changes.</td>
+                        <td>
+                            <button class="btn btn-sm btn-info btn-action">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning btn-action">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2023-04-28</td>
+                        <td>Medication Review</td>
+                        <td><span class="badge bg-danger badge-category">Medication</span></td>
+                        <td>Reviewed current medications and potential interactions with ulcer treatments.</td>
+                        <td>
+                            <button class="btn btn-sm btn-info btn-action">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning btn-action">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2023-04-20</td>
+                        <td>Lifestyle Changes</td>
+                        <td><span class="badge bg-info badge-category">Lifestyle</span></td>
+                        <td>Discussed lifestyle modifications that can help manage ulcer symptoms and promote healing.</td>
+                        <td>
+                            <button class="btn btn-sm btn-info btn-action">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning btn-action">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-3 border-top">
+            <div class="text-muted">
+                Showing 1 to 5 of 15 records
+            </div>
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

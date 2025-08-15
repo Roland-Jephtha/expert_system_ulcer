@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat History - Expert System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-history-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem 0;
+    }
+
+    .history-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .history-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.25rem 2rem 0 rgba(58, 59, 69, 0.2);
+    }
+
+    .history-card-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #e3e6f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .history-card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin: 0;
+    }
+
+    .history-card-date {
+        font-size: 0.875rem;
+        color: #858796;
+    }
+
+    .history-card-body {
+        padding: 1rem 1.5rem;
+    }
+
+    .history-card-text {
+        color: #5a5c69;
+        margin-bottom: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .history-card-footer {
+        padding: 0.75rem 1.5rem;
+        background-color: #f8f9fc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .history-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .history-tag {
+        background-color: #e9ecef;
+        color: #5a5c69;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 15px;
+    }
+
+    .history-card-actions a {
+        color: #4e73df;
+        text-decoration: none;
+        margin-left: 1rem;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .history-card-actions a i {
+        margin-right: 0.25rem;
+    }
+
+    .empty-history {
+        text-align: center;
+        padding: 3rem;
+        color: #858796;
+    }
+
+    .empty-history i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #dddfeb;
+    }
+
+    .filter-section {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .filter-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 1rem;
+    }
+
+    .search-box {
+        position: relative;
+    }
+
+    .search-box input {
+        padding-right: 2.5rem;
+    }
+
+    .search-box i {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #dddfeb;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chat-history-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Chat History</h1>
+        <a href="{% url 'chat' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> New Chat
+        </a>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-title">Search & Filter</div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="search-box">
+                    <input type="text" class="form-control" placeholder="Search conversations...">
+                    <i class="bi bi-search"></i>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <select class="form-select">
+                    <option>All Categories</option>
+                    <option>Ulcer Diet</option>
+                    <option>Symptoms</option>
+                    <option>Treatment</option>
+                    <option>Prevention</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <select class="form-select">
+                    <option>All Time</option>
+                    <option>Last 7 days</option>
+                    <option>Last 30 days</option>
+                    <option>Last 3 months</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat History List -->
+    <div class="history-list">
+        <!-- History Item 1 -->
+        <div class="history-card">
+            <div class="history-card-header">
+                <h5 class="history-card-title">Dietary Recommendations for Ulcer Management</h5>
+                <span class="history-card-date">Oct 15, 2023, 2:30 PM</span>
+            </div>
+            <div class="history-card-body">
+                <p class="history-card-text">
+                    I discussed with the expert about foods to eat and avoid when having an ulcer. The expert provided detailed information about high-fiber foods, probiotic-rich foods, and foods to avoid. They also explained how smaller, more frequent meals can help manage ulcer symptoms...
+                </p>
+            </div>
+            <div class="history-card-footer">
+                <div class="history-card-tags">
+                    <span class="history-tag">Diet</span>
+                    <span class="history-tag">Nutrition</span>
+                    <span class="history-tag">Ulcer Management</span>
+                </div>
+                <div class="history-card-actions">
+                    <a href="#"><i class="bi bi-eye"></i> View</a>
+                    <a href="#"><i class="bi bi-download"></i> Export</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Item 2 -->
+        <div class="history-card">
+            <div class="history-card-header">
+                <h5 class="history-card-title">Symptoms and Diagnosis of Stomach Ulcers</h5>
+                <span class="history-card-date">Oct 12, 2023, 10:15 AM</span>
+            </div>
+            <div class="history-card-body">
+                <p class="history-card-text">
+                    I asked about the symptoms of stomach ulcers and how they're diagnosed. The expert explained common symptoms like burning pain, bloating, and dark stools. They also discussed diagnostic methods including endoscopy, upper GI series, and tests for H. pylori infection...
+                </p>
+            </div>
+            <div class="history-card-footer">
+                <div class="history-card-tags">
+                    <span class="history-tag">Symptoms</span>
+                    <span class="history-tag">Diagnosis</span>
+                    <span class="history-tag">Medical</span>
+                </div>
+                <div class="history-card-actions">
+                    <a href="#"><i class="bi bi-eye"></i> View</a>
+                    <a href="#"><i class="bi bi-download"></i> Export</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Item 3 -->
+        <div class="history-card">
+            <div class="history-card-header">
+                <h5 class="history-card-title">Treatment Options for Ulcers</h5>
+                <span class="history-card-date">Oct 8, 2023, 4:45 PM</span>
+            </div>
+            <div class="history-card-body">
+                <p class="history-card-text">
+                    I inquired about ulcer treatments and received detailed information about medications like PPIs, H2 blockers, and antibiotics. The expert also discussed lifestyle changes that can help with ulcer treatment and healing, including stress management and diet modifications...
+                </p>
+            </div>
+            <div class="history-card-footer">
+                <div class="history-card-tags">
+                    <span class="history-tag">Treatment</span>
+                    <span class="history-tag">Medication</span>
+                    <span class="history-tag">Lifestyle</span>
+                </div>
+                <div class="history-card-actions">
+                    <a href="#"><i class="bi bi-eye"></i> View</a>
+                    <a href="#"><i class="bi bi-download"></i> Export</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Item 4 -->
+        <div class="history-card">
+            <div class="history-card-header">
+                <h5 class="history-card-title">Causes of Ulcers and Prevention Methods</h5>
+                <span class="history-card-date">Oct 5, 2023, 11:20 AM</span>
+            </div>
+            <div class="history-card-body">
+                <p class="history-card-text">
+                    I wanted to understand what causes ulcers and how to prevent them. The expert explained that H. pylori infection and NSAID use are the most common causes. They provided prevention strategies including good hygiene, limiting alcohol, not smoking, and managing stress...
+                </p>
+            </div>
+            <div class="history-card-footer">
+                <div class="history-card-tags">
+                    <span class="history-tag">Causes</span>
+                    <span class="history-tag">Prevention</span>
+                    <span class="history-tag">Risk Factors</span>
+                </div>
+                <div class="history-card-actions">
+                    <a href="#"><i class="bi bi-eye"></i> View</a>
+                    <a href="#"><i class="bi bi-download"></i> Export</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Item 5 -->
+        <div class="history-card">
+            <div class="history-card-header">
+                <h5 class="history-card-title">Difference Between Gastric and Duodenal Ulcers</h5>
+                <span class="history-card-date">Oct 2, 2023, 3:15 PM</span>
+            </div>
+            <div class="history-card-body">
+                <p class="history-card-text">
+                    I asked about the differences between gastric and duodenal ulcers. The expert explained that they differ in location, pain timing, symptoms, causes, and treatment approaches. They also discussed similarities in diagnosis and treatment options...
+                </p>
+            </div>
+            <div class="history-card-footer">
+                <div class="history-card-tags">
+                    <span class="history-tag">Gastric Ulcer</span>
+                    <span class="history-tag">Duodenal Ulcer</span>
+                    <span class="history-tag">Comparison</span>
+                </div>
+                <div class="history-card-actions">
+                    <a href="#"><i class="bi bi-eye"></i> View</a>
+                    <a href="#"><i class="bi bi-download"></i> Export</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}

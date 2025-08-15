@@ -1,0 +1,724 @@
+{% extends 'base.html' %}
+
+{% block title %}Resources - Expert System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .resources-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 0;
+    }
+
+    .resource-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .resource-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0.25rem 2rem 0 rgba(58, 59, 69, 0.2);
+    }
+
+    .resource-card-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #e3e6f0;
+    }
+
+    .resource-card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .resource-card-title i {
+        margin-right: 0.75rem;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    .resource-card-body {
+        padding: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .resource-card-text {
+        color: #5a5c69;
+        margin-bottom: 1.5rem;
+    }
+
+    .resource-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .resource-meta-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.875rem;
+        color: #858796;
+    }
+
+    .resource-meta-item i {
+        margin-right: 0.25rem;
+        font-size: 1rem;
+    }
+
+    .resource-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .resource-tag {
+        background-color: #e9ecef;
+        color: #5a5c69;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 15px;
+    }
+
+    .resource-card-footer {
+        padding: 1rem 1.5rem;
+        background-color: #f8f9fc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .resource-actions a {
+        color: var(--primary-color);
+        text-decoration: none;
+        margin-left: 1rem;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .resource-actions a i {
+        margin-right: 0.25rem;
+    }
+
+    .category-section {
+        margin-bottom: 3rem;
+    }
+
+    .category-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .category-title i {
+        margin-right: 0.75rem;
+        color: var(--primary-color);
+    }
+
+    .filter-section {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .filter-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #5a5c69;
+        margin-bottom: 1rem;
+    }
+
+    .search-box {
+        position: relative;
+    }
+
+    .search-box input {
+        padding-right: 2.5rem;
+    }
+
+    .search-box i {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #dddfeb;
+    }
+
+    .resource-rating {
+        display: flex;
+        align-items: center;
+    }
+
+    .resource-rating i {
+        color: #f6c23e;
+        font-size: 0.875rem;
+    }
+
+    .resource-rating span {
+        margin-left: 0.25rem;
+        font-size: 0.875rem;
+        color: #858796;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="resources-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Health Resources</h1>
+        <div class="d-flex gap-2">
+            <div class="search-box">
+                <input type="text" class="form-control" placeholder="Search resources...">
+                <i class="bi bi-search"></i>
+            </div>
+            <button class="btn btn-outline-primary">
+                <i class="bi bi-filter"></i> Filter
+            </button>
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-title">Browse by Category</div>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <div class="card border-left-primary h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-book me-2"></i> Articles
+                        </h5>
+                        <p class="card-text">In-depth articles about ulcer causes, symptoms, and treatments.</p>
+                        <a href="#" class="btn btn-sm btn-primary">View All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-left-success h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-file-earmark-pdf me-2"></i> Guides
+                        </h5>
+                        <p class="card-text">Comprehensive guides for managing ulcer symptoms and treatment.</p>
+                        <a href="#" class="btn btn-sm btn-success">View All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-left-info h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-play-circle me-2"></i> Videos
+                        </h5>
+                        <p class="card-text">Educational videos about ulcer diagnosis and treatment options.</p>
+                        <a href="#" class="btn btn-sm btn-info">View All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card border-left-warning h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-tools me-2"></i> Tools
+                        </h5>
+                        <p class="card-text">Interactive tools for tracking symptoms and treatment progress.</p>
+                        <a href="#" class="btn btn-sm btn-warning">View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Articles Section -->
+    <div class="category-section">
+        <h2 class="category-title">
+            <i class="bi bi-book"></i> Featured Articles
+        </h2>
+
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-journal-text"></i> Understanding Ulcers: Causes and Symptoms
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            Learn about the different types of ulcers, their causes, common symptoms, and when to seek medical attention. This comprehensive guide covers everything you need to know about peptic ulcers.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-person"></i> Dr. Sarah Johnson
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Oct 10, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-clock"></i> 8 min read
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Ulcer Basics</span>
+                            <span class="resource-tag">Symptoms</span>
+                            <span class="resource-tag">Causes</span>
+                        </div>
+                        <div class="resource-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-half"></i>
+                            <span>4.5 (128 reviews)</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-book"></i> Read Article</a>
+                            <a href="#"><i class="bi bi-bookmark"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-journal-text"></i> Diet and Nutrition for Ulcer Management
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            Discover which foods to eat and avoid when managing ulcers. This article provides detailed dietary recommendations, meal planning tips, and recipes specifically designed for ulcer patients.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-person"></i> Dr. Michael Chen
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Sep 28, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-clock"></i> 12 min read
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Diet</span>
+                            <span class="resource-tag">Nutrition</span>
+                            <span class="resource-tag">Lifestyle</span>
+                        </div>
+                        <div class="resource-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <span>5.0 (96 reviews)</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-book"></i> Read Article</a>
+                            <a href="#"><i class="bi bi-bookmark"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-journal-text"></i> Latest Advances in Ulcer Treatment
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            Stay updated with the latest medical advancements in ulcer treatment. This article covers new medications, surgical techniques, and emerging therapies for ulcer management.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-person"></i> Dr. Emily Rodriguez
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Oct 5, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-clock"></i> 10 min read
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Treatment</span>
+                            <span class="resource-tag">Medication</span>
+                            <span class="resource-tag">Research</span>
+                        </div>
+                        <div class="resource-rating">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <span>4.0 (74 reviews)</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-book"></i> Read Article</a>
+                            <a href="#"><i class="bi bi-bookmark"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Guides Section -->
+    <div class="category-section">
+        <h2 class="category-title">
+            <i class="bi bi-file-earmark-pdf"></i> Downloadable Guides
+        </h2>
+
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-file-earmark-pdf"></i> Complete Guide to Ulcer Management
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            A comprehensive 30-page guide covering all aspects of ulcer management, from understanding the condition to treatment options and long-term care strategies.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-file-earmark-pdf"></i> PDF (2.4 MB)
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Updated Oct 1, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-download"></i> 1,234 downloads
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Complete Guide</span>
+                            <span class="resource-tag">Management</span>
+                            <span class="resource-tag">Treatment</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-download"></i> Download</a>
+                            <a href="#"><i class="bi bi-share"></i> Share</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-file-earmark-pdf"></i> 7-Day Meal Plan for Ulcer Patients
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            A practical 7-day meal plan designed specifically for ulcer patients, with recipes, shopping lists, and nutritional information to support healing and symptom management.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-file-earmark-pdf"></i> PDF (1.8 MB)
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Updated Sep 15, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-download"></i> 892 downloads
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Meal Plan</span>
+                            <span class="resource-tag">Diet</span>
+                            <span class="resource-tag">Recipes</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-download"></i> Download</a>
+                            <a href="#"><i class="bi bi-share"></i> Share</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Videos Section -->
+    <div class="category-section">
+        <h2 class="category-title">
+            <i class="bi bi-play-circle"></i> Educational Videos
+        </h2>
+
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-play-circle"></i> Understanding Ulcers: A Visual Guide
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <div class="ratio ratio-16x9 mb-3">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" allowfullscreen></iframe>
+                        </div>
+                        <p class="resource-card-text">
+                            A 15-minute video explaining what ulcers are, how they develop, and the different types of ulcers that can affect the digestive system.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-eye"></i> 15,432 views
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Sep 20, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-clock"></i> 15:24
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Education</span>
+                            <span class="resource-tag">Visual Guide</span>
+                            <span class="resource-tag">Basics</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-play"></i> Watch</a>
+                            <a href="#"><i class="bi bi-bookmark"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-play-circle"></i> Cooking for Ulcer Management
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <div class="ratio ratio-16x9 mb-3">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" allowfullscreen></iframe>
+                        </div>
+                        <p class="resource-card-text">
+                            Learn how to prepare delicious, ulcer-friendly meals with this step-by-step cooking demonstration by professional chef and nutrition expert.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-eye"></i> 8,765 views
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Aug 30, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-clock"></i> 22:15
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Cooking</span>
+                            <span class="resource-tag">Recipes</span>
+                            <span class="resource-tag">Diet</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-play"></i> Watch</a>
+                            <a href="#"><i class="bi bi-bookmark"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-play-circle"></i> Patient Stories: Living with Ulcers
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <div class="ratio ratio-16x9 mb-3">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" allowfullscreen></iframe>
+                        </div>
+                        <p class="resource-card-text">
+                            Real patient stories about living with ulcers, their challenges, treatment journeys, and tips for managing the condition in daily life.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-eye"></i> 12,345 views
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar"></i> Sep 10, 2023
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-clock"></i> 18:42
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Patient Stories</span>
+                            <span class="resource-tag">Experience</span>
+                            <span class="resource-tag">Support</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-play"></i> Watch</a>
+                            <a href="#"><i class="bi bi-bookmark"></i> Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Tools Section -->
+    <div class="category-section">
+        <h2 class="category-title">
+            <i class="bi bi-tools"></i> Interactive Tools
+        </h2>
+
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-clipboard-check"></i> Symptom Tracker
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            Track your ulcer symptoms over time with this interactive tool. Monitor pain levels, food triggers, medication effectiveness, and overall well-being.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-calendar-check"></i> Daily tracking
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-graph-up"></i> Progress charts
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-download"></i> Export reports
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Tracking</span>
+                            <span class="resource-tag">Monitoring</span>
+                            <span class="resource-tag">Data</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-box-arrow-up-right"></i> Launch Tool</a>
+                            <a href="#"><i class="bi bi-info-circle"></i> Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-clipboard-check"></i> Medication Reminder
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            Never miss a dose with our customizable medication reminder system. Set up alerts for different medications, track adherence, and maintain treatment consistency.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-bell"></i> Custom alerts
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-list-check"></i> Medication list
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-phone"></i> Mobile app
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Reminder</span>
+                            <span class="resource-tag">Adherence</span>
+                            <span class="resource-tag">Treatment</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-box-arrow-up-right"></i> Launch Tool</a>
+                            <a href="#"><i class="bi bi-info-circle"></i> Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="resource-card">
+                    <div class="resource-card-header">
+                        <h3 class="resource-card-title">
+                            <i class="bi bi-clipboard-check"></i> Risk Assessment Quiz
+                        </h3>
+                    </div>
+                    <div class="resource-card-body">
+                        <p class="resource-card-text">
+                            Take this interactive quiz to assess your risk factors for developing ulcers. Get personalized recommendations for prevention and early intervention strategies.
+                        </p>
+                        <div class="resource-meta">
+                            <div class="resource-meta-item">
+                                <i class="bi bi-question-circle"></i> 10 questions
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-shield-check"></i> Confidential
+                            </div>
+                            <div class="resource-meta-item">
+                                <i class="bi bi-clock"></i> 5 min
+                            </div>
+                        </div>
+                        <div class="resource-tags">
+                            <span class="resource-tag">Assessment</span>
+                            <span class="resource-tag">Prevention</span>
+                            <span class="resource-tag">Risk</span>
+                        </div>
+                    </div>
+                    <div class="resource-card-footer">
+                        <div class="resource-actions">
+                            <a href="#"><i class="bi bi-box-arrow-up-right"></i> Start Quiz</a>
+                            <a href="#"><i class="bi bi-info-circle"></i> Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
