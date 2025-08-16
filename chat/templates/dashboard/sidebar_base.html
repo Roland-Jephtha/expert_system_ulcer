@@ -54,14 +54,41 @@
             z-index: 1100;
         }
 
+        /* By default hidden on mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -250px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+        }
+
         .sidebar-header {
             padding: 1.5rem;
             font-size: 1.25rem;
             font-weight: 700;
             background: var(--primary-hover);
             display: flex;
+            justify-content: space-between;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            color: white;
+            display: none; /* hidden on large screens */
+        }
+        .close-btn:hover {
+            color: #e2e8f0;
+        }
+        @media (max-width: 768px) {
+            .close-btn {
+                display: block; /* show only on mobile */
+            }
         }
 
         .sidebar-menu {
@@ -102,16 +129,16 @@
             transition: var(--transition);
             width: 100%;
         }
-
         @media (max-width: 768px) {
-            .sidebar {
-                left: -250px;
-            }
-            .sidebar.active {
-                left: 0;
-            }
             .main-content {
                 margin-left: 0;
+            }
+        }
+
+        /* Navbar shift on desktop */
+        @media (min-width: 992px) {
+            nav.navbar {
+                margin-left: 250px;
             }
         }
     </style>
@@ -123,13 +150,17 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <i class="bi bi-heart-pulse"></i> Expert System
+            <span><i class="bi bi-heart-pulse"></i> Expert System</span>
+            <!-- Close button for mobile -->
+            <button class="close-btn" id="closeSidebar">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
         <nav class="sidebar-menu">
             <a href="{% url 'dashboard' %}" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a href="{% url 'chat' %}"><i class="bi bi-chat-dots"></i> Consult Expert</a>
-            <a href="#"><i class="bi bi-calendar-check"></i> Appointments</a>
+            <a href="{% url 'chat' %}"><i class="bi bi-chat-dots"></i> Consult the Expert</a>
             <a href="#"><i class="bi bi-file-earmark-medical"></i> Reports</a>
+            <a href="#"><i class="bi bi-person"></i> Profile</a>
             <!-- <a href="{% url 'history' %}"><i class="bi bi-clock-history"></i> History</a> -->
             <a href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </nav>
@@ -139,48 +170,37 @@
     </aside>
 
     <!-- Bootstrap Navbar -->
-<!-- Bootstrap Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top" style="z-index: 1050;">
-    <div class="container-fluid">
-        <!-- Sidebar toggle button -->
-        <button class="btn btn-primary d-lg-none me-2" id="toggleBtn">
-            <i class="bi bi-list"></i>
-        </button>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top" style="z-index: 1050;">
+        <div class="container-fluid">
+            <!-- Sidebar toggle button -->
+            <button class="btn btn-primary d-lg-none me-2" id="toggleBtn">
+                <i class="bi bi-list"></i>
+            </button>
 
-        <!-- Brand / Title -->
-        <a class="navbar-brand text-dark fw-bold" href="#">Expert System</a>
+            <!-- Brand / Title -->
+            <a class="navbar-brand text-dark fw-bold" href="#">Expert System</a>
 
-        <!-- Collapsible menu toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Collapsible menu toggle -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Collapsible content -->
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-bell fs-5 text-secondary"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-gear fs-5 text-secondary"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-person-circle fs-5 text-secondary"></i></a>
-                </li>
-            </ul>
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-bell fs-5 text-secondary"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-gear fs-5 text-secondary"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-person-circle fs-5 text-secondary"></i></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-
-<style>
-/* Only push navbar when sidebar is visible on large screens */
-@media (min-width: 992px) {
-    nav.navbar {
-        margin-left: 250px;
-    }
-}
-</style>
-
+    </nav>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -191,8 +211,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.getElementById('toggleBtn').addEventListener('click', function () {
-            document.getElementById('sidebar').classList.toggle('active');
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const closeBtn = document.getElementById('closeSidebar');
+
+        toggleBtn.addEventListener('click', function () {
+            sidebar.classList.toggle('active');
+        });
+
+        closeBtn.addEventListener('click', function () {
+            sidebar.classList.remove('active');
         });
     </script>
 
