@@ -1,0 +1,71 @@
+{% extends 'dashboard/sidebar_base.html' %}
+
+{% block title %}Create Report - Expert System{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="content-wrapper">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Create Medical Report</h1>
+            <p>Generate a report from your latest consultation</p>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="text-center mb-4">
+                            <i class="bi bi-file-earmark-medical text-primary" style="font-size: 4rem;"></i>
+                            <h3 class="mt-3">Generate Your Medical Report</h3>
+                            <p class="text-muted">This will create a report based on your latest consultation conversation with our expert system.</p>
+                        </div>
+
+                        <form method="post" action="{% url 'create_report' %}">
+                            {% csrf_token %}
+
+                            <div class="card mb-4 bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="bi bi-info-circle me-2"></i> What will be included in your report?
+                                    </h5>
+                                    <ul class="mb-0">
+                                        <li>Summary of your symptoms and concerns</li>
+                                        <li>Diagnosis information provided by the system</li>
+                                        <li>Treatment recommendations and advice</li>
+                                        <li>Full conversation history for reference</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-file-earmark-plus me-2"></i> Generate Report
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <a href="{% url 'chat' %}" class="btn btn-outline-primary">
+                                <i class="bi bi-chat-dots me-2"></i> Start New Consultation
+                            </a>
+                            <a href="{% url 'reports' %}" class="btn btn-outline-secondary ms-2">
+                                <i class="bi bi-arrow-left me-2"></i> Back to Reports
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

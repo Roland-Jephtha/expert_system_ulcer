@@ -133,7 +133,28 @@ async function handleQuestionClick(question) {
             })
             .then(response => response.json())
             .then(data => {
+                // Add bot response to chat
                 appendMessage('bot', data.response);
+
+
+
+                // Check if this response contains a diagnosis
+                if (data.response.includes("Based on your symptoms") || 
+                    data.response.includes("you may have") || 
+                    data.response.includes("diagnosis") ||
+                    data.response.includes("particularly the") ||
+                    data.response.includes("burning pain in the lower chest")) {
+                    // Show the report generation button
+                    showReportGenerationButton();
+                }
+
+                // Handle suggestions if provided
+                if (data.suggestions && data.suggestions.length > 0) {
+                    showSuggestions(data.suggestions);
+                } else {
+                    clearSuggestions();
+                }
+
 
                 // Add follow-up suggestions
                 setTimeout(() => {
@@ -296,6 +317,130 @@ function clearSuggestions() {
         const emptyContainers = suggestionsContainer.querySelectorAll('.suggestions-container:empty');
         emptyContainers.forEach(container => container.remove());
     }
+}
+
+// Function to show report generation button
+function showReportGenerationButton() {
+    const startChatContainer = document.getElementById('start-chat-container');
+    const reportGenerationContainer = document.getElementById('report-generation-container');
+    
+    if (startChatContainer) {
+        startChatContainer.style.display = 'none';
+    }
+    
+    if (reportGenerationContainer) {
+        reportGenerationContainer.style.display = 'block';
+        
+        // Add click event listener to the report button
+        const reportButton = document.getElementById('generate-report-btn');
+        if (reportButton) {
+            reportButton.addEventListener('click', function() {
+                generateReport();
+            });
+        }
+    }
+}
+
+// Function to generate report
+// Function to generate report
+function generateReport() {
+    // Get the conversation history
+    const messagesContainer = document.getElementById('messages');
+    if (!messagesContainer) return;
+    
+    // Extract conversation history
+    let conversationHistory = '';
+    let symptoms = '';
+    let diagnosis = '';
+    let recommendations = '';
+    let lastSystemMessage = '';
+    
+    const messageElements = messagesContainer.querySelectorAll('.message');
+    
+    // Process each message to extract relevant information
+    messageElements.forEach(msg => {
+        const isUser = msg.classList.contains('user');
+        const content = msg.querySelector('.message-content > div').textContent;
+        const sender = isUser ? 'User' : 'System';
+        
+        // Add to conversation history
+        conversationHistory += `${sender}: ${content}\n`;
+        
+        // Extract symptoms from user messages
+        if (isUser && (content.includes('pain') || content.includes('symptom') || 
+                      content.includes('feel') || content.includes('ache') || 
+                      content.includes('discomfort') || content.includes('burning'))) {
+            symptoms += content + '\n';
+        }
+        
+        // Extract diagnosis from system messages
+        if (!isUser && (content.includes('diagnosis') || content.includes('you may have') || 
+                       content.includes('based on your symptoms') || content.includes('particularly the') ||
+                       content.includes('burning pain in the lower chest'))) {
+            // If this is a diagnosis message, add it to the diagnosis variable
+            diagnosis += content + '\n';
+        }
+        
+        // Keep track of the last system message
+        if (!isUser) {
+            lastSystemMessage = content;
+        }
+    });
+    
+    // Use the last system message as the recommendation if it's not already included in diagnosis
+    if (lastSystemMessage && !diagnosis.includes(lastSystemMessage)) {
+        recommendations = lastSystemMessage;
+    }
+    
+    // If we still don't have recommendations, look for messages with recommendation keywords
+    if (!recommendations) {
+        messageElements.forEach(msg => {
+            if (!msg.classList.contains('user')) {
+                const content = msg.querySelector('.message-content > div').textContent;
+                if (content.includes('recommend') || content.includes('should') || 
+                    content.includes('treatment') || content.includes('advice')) {
+                    recommendations += content + '\n';
+                }
+            }
+        });
+    }
+    
+    // Send the data to the server to create a report
+    fetch('/chat/reports/create/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            conversation: conversationHistory,
+            symptoms: symptoms,
+            diagnosis: diagnosis,
+            recommendations: recommendations
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            alert('Report generated successfully! You can now view it in the Reports section.');
+            
+            // Redirect to reports page
+            window.location.href = '/chat/reports/';
+        } else {
+            alert('Error generating report: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error generating report. Please try again.');
+    });
 }
 
 // Function to get cookie value
@@ -477,6 +622,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Add bot response to chat
                 appendMessage('bot', data.response);
+
+                // Check if this response contains a diagnosis
+                if (data.response.includes("Based on your symptoms") || 
+                    data.response.includes("you may have") || 
+                    data.response.includes("diagnosis")) {
+                    // Show the report generation button
+                    showReportGenerationButton();
+                }
 
                 // Handle suggestions if provided
                 if (data.suggestions && data.suggestions.length > 0) {

@@ -356,9 +356,12 @@
 <body>
     <div class="chat-container">
         <div class="chat-header">
-            <i class="bi bi-chat-dots expert-icon" ></i>
+            {% comment %} <i class="bi bi-chat-dots expert-icon" ></i> {% endcomment %}
+            
+            <i class="bi bi-robot expert-icon" style="font-size: 2.5rem;"></i>
+
             <div>
-                <h4 class="mb-0">Expert System for Diagnosis and Treatment of Ulcer</h4>
+                <h5 class="mb-0">Expert System for Diagnosis and Treatment of Ulcer</h5>
                 <small>Ask me health-related questions</small>
             </div>
         </div>
@@ -373,10 +376,17 @@
                 <div class="suggestion-chips" id="suggestions">
                     <!-- Questions will be added by JavaScript -->
                 </div>
-                <div class="start-chat-button-container">
+                <div class="start-chat-button-container" id="start-chat-container">
                     <button class="btn btn-primary start-chat-button" id="start-chat-button">
                         <i class="bi bi-chat-dots-fill me-2"></i>
                         Start Chat
+                    </button>
+                </div>
+                
+                <!-- Report Generation Button (hidden by default) -->
+                <div class="report-generation-container text-center mt-3" id="report-generation-container" style="display: none;">
+                    <button class="btn btn-success start-chat-button" id="generate-report-btn">
+                        <i class="bi bi-file-earmark-medical me-2"></i> Generate Medical Report
                     </button>
                 </div>
             </div>
@@ -401,6 +411,9 @@
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <!-- Custom JavaScript -->
     <script src="{% static 'chat/js/chat_fixed_all_sounds.js' %}"></script>
+
+
+  
 
 </body>
 </html>

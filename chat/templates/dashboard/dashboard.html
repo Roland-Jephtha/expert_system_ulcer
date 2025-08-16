@@ -1,637 +1,552 @@
 {% extends 'dashboard/sidebar_base.html' %}
 
-{% block title %}Dashboard - Expert System{% endblock %}
-
-{% block extra_css %}
-<style>
-    /* Modern Design System */
-    :root {
-        --primary-color: #1a2a6c;
-        --primary-hover: #15235a;
-        --secondary-color: #64748b;
-        --success-color: #059669;
-        --warning-color: #d97706;
-        --danger-color: #dc2626;
-        --info-color: #0891b2;
-        
-        --bg-primary: #ffffff;
-        --bg-secondary: #f8fafc;
-        --bg-tertiary: #f1f5f9;
-        
-        --text-primary: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #94a3b8;
-        
-        --border-color: #e2e8f0;
-        --border-light: #f1f5f9;
-        
-        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        
-        --radius-sm: 6px;
-        --radius-md: 8px;
-        --radius-lg: 12px;
-        --radius-xl: 16px;
-        
-        --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f5f7fa;
-        color: var(--text-primary);
-        line-height: 1.6;
-    }
-
-    /* Layout */
-    .dashboard-container {
-        max-width: 1600px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
-
-    .content-wrapper {
-        background: transparent;
-    }
-
-    /* Header */
-    .page-header {
-        margin-bottom: 2rem;
-    }
-
-    .page-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.025em;
-    }
-
-    .page-header p {
-        color: var(--text-secondary);
-        font-size: 1rem;
-    }
-
-    /* Grid System */
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 0 -0.75rem;
-    }
-
-    .row > * {
-        padding: 0 0.75rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .col-12 { flex: 0 0 100%; max-width: 100%; }
-    .col-6 { flex: 0 0 50%; max-width: 50%; }
-    .col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-    .col-3 { flex: 0 0 25%; max-width: 25%; }
-    .col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
-
-    @media (max-width: 768px) {
-        .col-sm-6 { flex: 0 0 50%; max-width: 50%; }
-        .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
-    }
-
-    /* Card Component */
-    .card {
-        background: var(--bg-primary);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border-light);
-        transition: var(--transition);
-        overflow: hidden;
-        height: 100%;
-    }
-
-    .card:hover {
-        box-shadow: var(--shadow-md);
-        transform: translateY(-1px);
-    }
-
-    .card-header {
-        padding: 1.5rem 1.5rem 0;
-        border-bottom: none;
-        background: transparent;
-    }
-
-    .card-body {
-        padding: 1.5rem;
-    }
-
-    .card-title {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 0.5rem;
-    }
-
-    .card-subtitle {
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        margin-bottom: 1rem;
-    }
-
-    /* Stat Cards */
-    .stat-card {
-        position: relative;
-        cursor: pointer;
-        border: none;
-    }
-
-    .stat-card .card-body {
-        position: relative;
-        z-index: 2;
-    }
-
-    .stat-card .stat-icon {
-        position: absolute;
-        top: 1.5rem;
-        right: 1.5rem;
-        width: 3rem;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--radius-lg);
-        font-size: 1.5rem;
-        z-index: 1;
-    }
-
-    .stat-card .stat-value {
-        font-size: 2.25rem;
-        font-weight: 700;
-        line-height: 1;
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-card .stat-label {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .stat-card .stat-trend {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        margin-top: 0.75rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
-
-    /* Stat Card Variants */
-    .stat-card.primary .stat-icon {
-        background-color: #dbeafe;
-        color: var(--primary-color);
-    }
-
-    .stat-card.success .stat-icon {
-        background-color: #dcfce7;
-        color: var(--success-color);
-    }
-
-    .stat-card.warning .stat-icon {
-        background-color: #fef3c7;
-        color: var(--warning-color);
-    }
-
-    .stat-card.info .stat-icon {
-        background-color: #cffafe;
-        color: var(--info-color);
-    }
-
-    /* Quick Actions */
-    .quick-actions-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .quick-action-item {
-        display: flex;
-        align-items: center;
-        padding: 1.5rem;
-        background: var(--bg-primary);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-sm);
-        border: 1px solid var(--border-light);
-        text-decoration: none;
-        color: var(--text-primary);
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .quick-action-item::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: var(--primary-color);
-        transform: scaleY(0);
-        transform-origin: bottom;
-        transition: var(--transition);
-    }
-
-    .quick-action-item:hover {
-        box-shadow: var(--shadow-md);
-        transform: translateY(-1px);
-        text-decoration: none;
-        color: var(--text-primary);
-    }
-
-    .quick-action-item:hover::before {
-        transform: scaleY(1);
-    }
-
-    .quick-action-icon {
-        flex-shrink: 0;
-        width: 3rem;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--bg-tertiary);
-        border-radius: var(--radius-md);
-        margin-right: 1rem;
-        font-size: 1.25rem;
-        color: var(--primary-color);
-    }
-
-    .quick-action-content h5 {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
-
-    .quick-action-content p {
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-        margin: 0;
-    }
-
-    /* Activity List */
-    .activity-list {
-        space-y: 1rem;
-    }
-
-    .activity-item {
-        display: flex;
-        padding: 1rem;
-        background: var(--bg-secondary);
-        border-radius: var(--radius-md);
-        border-left: 3px solid var(--primary-color);
-        transition: var(--transition);
-    }
-
-    .activity-item:hover {
-        background: var(--bg-tertiary);
-        transform: translateX(2px);
-    }
-
-    .activity-item:not(:last-child) {
-        margin-bottom: 1rem;
-    }
-
-    .activity-icon {
-        flex-shrink: 0;
-        width: 2.5rem;
-        height: 2.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--bg-primary);
-        border-radius: var(--radius-md);
-        margin-right: 1rem;
-        box-shadow: var(--shadow-sm);
-    }
-
-    .activity-content {
-        flex: 1;
-        min-width: 0;
-    }
-
-    .activity-title {
-        font-size: 0.875rem;
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
-
-    .activity-description {
-        font-size: 0.8125rem;
-        color: var(--text-secondary);
-        margin-bottom: 0.25rem;
-    }
-
-    .activity-time {
-        font-size: 0.75rem;
-        color: var(--text-muted);
-    }
-
-    /* Button Component */
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        border-radius: var(--radius-md);
-        border: 1px solid transparent;
-        text-decoration: none;
-        cursor: pointer;
-        transition: var(--transition);
-        gap: 0.5rem;
-    }
-
-    .btn-primary {
-        background: var(--primary-color);
-        color: white;
-    }
-
-    .btn-primary:hover {
-        background: var(--primary-hover);
-        color: white;
-        text-decoration: none;
-    }
-
-    .btn-outline {
-        border-color: var(--border-color);
-        color: var(--text-secondary);
-    }
-
-    .btn-outline:hover {
-        background: var(--bg-tertiary);
-        color: var(--text-primary);
-        text-decoration: none;
-    }
-
-    .btn-sm {
-        padding: 0.375rem 0.75rem;
-        font-size: 0.8125rem;
-    }
-
-    /* Utilities */
-    .text-primary { color: var(--text-primary) !important; }
-    .text-secondary { color: var(--text-secondary) !important; }
-    .text-muted { color: var(--text-muted) !important; }
-    .text-success { color: var(--success-color) !important; }
-    .text-warning { color: var(--warning-color) !important; }
-    .text-danger { color: var(--danger-color) !important; }
-
-    .mb-2 { margin-bottom: 0.5rem !important; }
-    .mb-3 { margin-bottom: 1rem !important; }
-    .mb-4 { margin-bottom: 1.5rem !important; }
-
-    .d-flex { display: flex !important; }
-    .align-items-center { align-items: center !important; }
-    .justify-content-between { justify-content: space-between !important; }
-
-    .fw-bold { font-weight: 700 !important; }
-    .fw-semibold { font-weight: 600 !important; }
-
-    /* Responsive Design */
-    @media (max-width: 1024px) {
-        .col-8, .col-4 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .dashboard-container {
-            padding: 1rem 0.75rem;
-        }
-        
-        .col-3, .col-6 {
-            flex: 0 0 50%;
-            max-width: 50%;
-        }
-        
-        .page-header h1 {
-            font-size: 1.75rem;
-        }
-        
-        .stat-card .stat-value {
-            font-size: 1.875rem;
-        }
-        
-        .quick-actions-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .col-3, .col-6 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-        
-        .row {
-            margin: 0 -0.5rem;
-        }
-        
-        .row > * {
-            padding: 0 0.5rem;
-        }
-    }
-</style>
-{% endblock %}
+{% block title %}Ulcer Expert System - Dashboard{% endblock %}
 
 {% block content %}
 <div class="dashboard-container">
     <div class="content-wrapper">
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1>Dashboard</h1>
-            <p>Welcome back! Here's what's happening with your health today.</p>
+        <!-- Modern Header -->
+        <div class="modern-header">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1 class="header-title">Ulcer Expert System</h1>
+                    <p class="header-subtitle">AI-powered ulcer diagnosis and treatment recommendations</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-modern btn-primary" onclick="window.location.href='{% url 'chat' %}'">
+                        <div class="btn-icon">
+                            <i class="bi bi-robot expert-icon"></i>
+                        </div>
+                        <span>Consult the Expert</span>
+                    </button>
+                </div>
+            </div>
+            <div class="header-background"></div>
         </div>
 
-        <!-- Statistics Cards -->
-        <div class="row mb-4">
-            <div class="col-3 col-sm-6">
-                <div class="card stat-card primary">
-                    <div class="card-body">
-                        <div class="stat-icon">
-                            <i class="bi bi-chat-dots-fill"></i>
-                        </div>
-                        <div class="stat-value">24</div>
-                        <div class="stat-label">Total Consultations</div>
-                        <div class="stat-trend text-success">
-                            <i class="bi bi-arrow-up"></i>
-                            <span>12% from last month</span>
-                        </div>
-                    </div>
+        <!-- Health Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon stat-primary">
+                    <i class="bi bi-file-medical"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ reports|length }}</div>
+                    <div class="stat-label">Consultations</div>
+                </div>
+                <div class="stat-trend">
+                    <i class="bi bi-trending-up"></i>
                 </div>
             </div>
-
-            <div class="col-3 col-sm-6">
-                <div class="card stat-card success">
-                    <div class="card-body">
-                        <div class="stat-icon">
-                            <i class="bi bi-heart-pulse-fill"></i>
-                        </div>
-                        <div class="stat-value">85%</div>
-                        <div class="stat-label">Health Score</div>
-                        <div class="stat-trend text-success">
-                            <i class="bi bi-arrow-up"></i>
-                            <span>5% improvement</span>
-                        </div>
-                    </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-success">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-trend">
+                    <i class="bi bi-check-circle"></i>
                 </div>
             </div>
-
-            <div class="col-3 col-sm-6">
-                <div class="card stat-card warning">
-                    <div class="card-body">
-                        <div class="stat-icon">
-                            <i class="bi bi-journal-medical"></i>
-                        </div>
-                        <div class="stat-value">98%</div>
-                        <div class="stat-label">Knowledge Base</div>
-                        <div class="stat-trend text-muted">
-                            <i class="bi bi-dash"></i>
-                            <span>No change</span>
-                        </div>
-                    </div>
+            <div class="stat-card">
+                <div class="stat-icon stat-info">
+                    <i class="bi bi-clock"></i>
                 </div>
-            </div>
-
-            <div class="col-3 col-sm-6">
-                <div class="card stat-card info">
-                    <div class="card-body">
-                        <div class="stat-icon">
-                            <i class="bi bi-people-fill"></i>
-                        </div>
-                        <div class="stat-value">1,456</div>
-                        <div class="stat-label">Active Users</div>
-                        <div class="stat-trend text-success">
-                            <i class="bi bi-arrow-up"></i>
-                            <span>8% this week</span>
-                        </div>
-                    </div>
+                <div class="stat-content">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Available</div>
+                </div>
+                <div class="stat-trend">
+                    <i class="bi bi-lightning"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="row">
-            <!-- Quick Actions -->
-            <div class="col-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Quick Actions</h3>
-                        <p class="card-subtitle">Access your most used features</p>
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+            </div>
+            <div class="actions-grid">
+                <div class="action-card primary" onclick="window.location.href='{% url 'chat' %}'">
+                    <div class="action-icon">
+                        <i class="bi bi-chat-dots"></i>
                     </div>
-                    <div class="card-body">
-                        <div class="quick-actions-grid">
-                            <a href="{% url 'chat' %}" class="quick-action-item">
-                                <div class="quick-action-icon">
-                                    <i class="bi bi-chat-dots-fill"></i>
-                                </div>
-                                <div class="quick-action-content">
-                                    <h5>Start New Consultation</h5>
-                                    <p>Chat with our expert system for health advice</p>
-                                </div>
-                            </a>
+                    <h3>New Consultation</h3>
+                    <p>Start AI-powered ulcer assessment</p>
+                </div>
+                <div class="action-card success" onclick="window.location.href='{% url 'reports' %}'">
+                    <div class="action-icon">
+                        <i class="bi bi-journal-medical"></i>
+                    </div>
+                    <h3>View Reports</h3>
+                    <p>Access your medical history</p>
+                </div>
+           
+            </div>
+        </div>
 
-                            <a href="#" class="quick-action-item">
-                                <div class="quick-action-icon">
-                                    <i class="bi bi-calendar-check"></i>
-                                </div>
-                                <div class="quick-action-content">
-                                    <h5>Schedule Appointment</h5>
-                                    <p>Book a consultation with our specialists</p>
-                                </div>
-                            </a>
-
-                            <a href="#" class="quick-action-item">
-                                <div class="quick-action-icon">
-                                    <i class="bi bi-journal-medical"></i>
-                                </div>
-                                <div class="quick-action-content">
-                                    <h5>Medical Resources</h5>
-                                    <p>Access educational materials and guides</p>
-                                </div>
-                            </a>
-
-                            <a href="#" class="quick-action-item">
-                                <div class="quick-action-icon">
-                                    <i class="bi bi-file-earmark-medical"></i>
-                                </div>
-                                <div class="quick-action-content">
-                                    <h5>View Reports</h5>
-                                    <p>Check your health history and reports</p>
-                                </div>
-                            </a>
-                        </div>
+        <!-- Recent Activity -->
+        {% if reports %}
+        <div class="recent-activity">
+            <div class="section-header">
+                <h2>Recent Consultations</h2>
+                <a href="{% url 'reports' %}" class="view-all">View All</a>
+            </div>
+            
+            <div class="activity-list">
+                {% for report in reports|slice:":3" %}
+                <div class="activity-item" onclick="window.location.href='{% url 'view_report' report.id %}'">
+                    <div class="activity-icon">
+                        <i class="bi bi-file-earmark-medical"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h4>{{ report.title|truncatechars:40 }}</h4>
+                        <p>{{ report.created_at|date:"M d, Y - g:i A" }}</p>
+                    </div>
+                    <div class="activity-status">
+                        <span class="status-badge complete">Complete</span>
                     </div>
                 </div>
+                {% endfor %}
             </div>
+        </div>
+        {% else %}
+        <div class="welcome-section">
+            <div class="welcome-icon">
+                <i class="bi bi-heart-pulse"></i>
+            </div>
+            <h3>Welcome to Your Health Dashboard</h3>
+            <p>Start your first ulcer consultation to begin tracking your health journey</p>
 
-            <!-- Recent Activity -->
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h3 class="card-title">Recent Activity</h3>
-                            <a href="{% url 'history' %}" class="btn btn-outline btn-sm">View All</a>
-                        </div>
+            <center>
+            <button class="btn-modern btn-primary" onclick="window.location.href='{% url 'chat' %}'">
+                <div class="btn-icon">
+                    <i class="bi bi-chat-dots"></i>
+                </div>
+                <span>Start First Consultation</span>
+            </button>
+            </center>
+        </div>
+        {% endif %}
+
+        <!-- Health Tips -->
+        <div class="health-tips">
+            <div class="section-header">
+                <h2>Ulcer Prevention Tips</h2>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="bi bi-apple"></i>
                     </div>
-                    <div class="card-body">
-                        <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="bi bi-heart-pulse text-danger"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <div class="activity-title">Ulcer Diet Consultation</div>
-                                    <div class="activity-description">Discussed dietary recommendations for ulcer management</div>
-                                    <div class="activity-time">2 hours ago</div>
-                                </div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="bi bi-search text-info"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <div class="activity-title">Symptom Analysis</div>
-                                    <div class="activity-description">Analyzed symptoms and provided initial recommendations</div>
-                                    <div class="activity-time">Yesterday</div>
-                                </div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon">
-                                    <i class="bi bi-clipboard-check text-success"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <div class="activity-title">Treatment Options</div>
-                                    <div class="activity-description">Reviewed various treatment approaches for ulcers</div>
-                                    <div class="activity-time">3 days ago</div>
-                                </div>
-                            </div>
-                        </div>
+                    <h4>Healthy Diet</h4>
+                    <p>Avoid spicy foods and eat regular meals</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="bi bi-shield-x"></i>
                     </div>
+                    <h4>Reduce Stress</h4>
+                    <p>Practice relaxation techniques daily</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="bi bi-prescription2"></i>
+                    </div>
+                    <h4>Medication Care</h4>
+                    <p>Follow prescribed treatment plans</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+:root {
+    --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --info: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    --glass: rgba(255, 255, 255, 0.1);
+    --border: rgba(255, 255, 255, 0.2);
+    --shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+}
+
+.dashboard-container {
+    min-height: 100vh;
+    padding: 2rem;
+    {% comment %} background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); {% endcomment %}
+}
+
+.content-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.modern-header {
+    position: relative;
+    margin-bottom: 3rem;
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    background: var(--glass);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+    z-index: -1;
+}
+
+.header-content {
+    padding: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.header-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0 0 0.5rem 0;
+}
+
+.header-subtitle {
+    color: #4a5568;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.btn-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    text-decoration: none;
+}
+
+.btn-modern.btn-primary {
+    background: var(--primary);
+    box-shadow: 0 4px 20px rgba(103, 126, 234, 0.4);
+}
+
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(103, 126, 234, 0.6);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.stat-icon.stat-primary { background: var(--primary); }
+.stat-icon.stat-success { background: var(--success); }
+.stat-icon.stat-info { background: var(--info); }
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.stat-label {
+    color: #4a5568;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.stat-trend {
+    margin-left: auto;
+    color: #10b981;
+    font-size: 1.2rem;
+}
+
+.quick-actions, .recent-activity, .health-tips {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: var(--shadow);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0;
+}
+
+.view-all {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.action-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.action-card.primary { border-color: #667eea; }
+.action-card.success { border-color: #10b981; }
+.action-card.info { border-color: #3b82f6; }
+
+.action-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 1rem;
+    color: white;
+}
+
+.action-card.primary .action-icon { background: var(--primary); }
+.action-card.success .action-icon { background: var(--success); }
+.action-card.info .action-icon { background: var(--info); }
+
+.action-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 0.5rem 0;
+}
+
+.action-card p {
+    color: #4a5568;
+    margin: 0;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateX(5px);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.activity-content h4 {
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 0.25rem 0;
+}
+
+.activity-content p {
+    color: #4a5568;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.status-badge.complete {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.welcome-section {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    margin-bottom: 2rem;
+}
+
+.welcome-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    margin: 0 auto 1rem;
+}
+
+.welcome-section h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 1rem 0;
+}
+
+.welcome-section p {
+    color: #4a5568;
+    margin: 0 0 2rem 0;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.tip-card {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 16px;
+    transition: transform 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-3px);
+}
+
+.tip-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--info);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: white;
+    margin: 0 auto 1rem;
+}
+
+.tip-card h4 {
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 0.5rem 0;
+}
+
+.tip-card p {
+    color: #4a5568;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
+    
+    .stats-grid, .actions-grid, .tips-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-title {
+        font-size: 2rem;
+    }
+}
+</style>
 {% endblock %}

@@ -157,10 +157,10 @@
             </button>
         </div>
         <nav class="sidebar-menu">
-            <a href="{% url 'dashboard' %}" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a href="{% url 'chat' %}"><i class="bi bi-chat-dots"></i> Consult the Expert</a>
-            <a href="#"><i class="bi bi-file-earmark-medical"></i> Reports</a>
-            <a href="#"><i class="bi bi-person"></i> Profile</a>
+            <a href="{% url 'dashboard' %}" ><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="{% url 'chat' %}"><i class="bi bi-robot expert-icon"></i> Consult the Expert</a>
+            <a href="{% url 'reports' %}"><i class="bi bi-file-earmark-medical"></i> Reports</a>
+            <a href="{% url 'profile_update' %}"><i class="bi bi-person"></i> Profile</a>
             <!-- <a href="{% url 'history' %}"><i class="bi bi-clock-history"></i> History</a> -->
             <a href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
         </nav>
@@ -188,14 +188,14 @@
             <!-- Collapsible content -->
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-bell fs-5 text-secondary"></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-gear fs-5 text-secondary"></i></a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-person-circle fs-5 text-secondary"></i></a>
+                        <a class="nav-link" href="{% url 'profile_update' %}"><i class="bi bi-person-circle fs-5 text-secondary"></i></a>
                     </li>
                 </ul>
             </div>
@@ -223,6 +223,25 @@
             sidebar.classList.remove('active');
         });
     </script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if messages %}
+    <script>
+        {% for message in messages %}
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '{{ message }}',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        {% endfor %}
+    </script>
+{% endif %}
 
 </body>
 </html>
